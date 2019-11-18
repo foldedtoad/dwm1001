@@ -18,7 +18,12 @@
 #include "port.h"
 
 //zephyr includes
+#include <zephyr.h>
 #include <misc/printk.h>
+
+#define LOG_LEVEL 3
+#include <logging/log.h>
+LOG_MODULE_REGISTER(main);
 
 extern int dw_main(void);
 
@@ -39,7 +44,8 @@ static dwt_config_t config = {
     (129)            /* SFD timeout (preamble length + 1 + SFD length - PAC size). Used in RX only. */           
 };
 
-/* The frame sent in this example is an 802.15.4e standard blink. It is a 12-byte frame composed of the following fields:
+/* The frame sent in this example is an 802.15.4e standard blink. 
+ * It is a 12-byte frame composed of the following fields:
  *     - byte 0: frame type (0xC5 for a blink).
  *     - byte 1: sequence number, incremented for each new frame.
  *     - byte 2 -> 9: device ID, see NOTE 1 below.
@@ -57,22 +63,25 @@ static uint8 tx_msg[] = {0xC5, 0, 'D', 'E', 'C', 'A', 'W', 'A', 'V', 'E', 0, 0};
 int dw_main(void)
 {
     /* Display application name on console. */
-    printk(APP_NAME);
+    LOG_INF("%s", APP_NAME);
+    //k_sleep(K_MSEC(10)); // allow logging to run.
 
     /* Reset and initialise DW1000. See NOTE 2 below.
-     * For initialisation, DW1000 clocks must be temporarily set to crystal speed. After initialisation SPI rate can be increased for optimum
-     * performance. */
+     * For initialisation, DW1000 clocks must be temporarily set to crystal speed. 
+     * After initialisation SPI rate can be increased for optimum performance.
+     */
     reset_DW1000(); /* Target specific drive of RSTn line into DW1000 low for a period. */
     port_set_dw1000_slowrate();
-    
+
     /* Configure DW1000 SPI */
     openspi();
 
     if (dwt_initialise(DWT_LOADNONE) == DWT_ERROR)
     {
         printk("INIT FAILED");
+        k_sleep(K_MSEC(500)); // allow logging to run.
         while (1)
-        { };
+        { /* spin */ };
     }
     port_set_dw1000_fastrate();
 
@@ -83,7 +92,7 @@ int dw_main(void)
     dwt_setleds(1);
 
     /* Loop forever sending frames periodically. */
-    while(1)
+    while (1)
     {
         /* Write frame data to DW1000 and prepare transmission. See NOTE 4 below.*/
         dwt_writetxdata(sizeof(tx_msg), tx_msg, 0); /* Zero offset in TX buffer. */
@@ -92,11 +101,14 @@ int dw_main(void)
         /* Start transmission. */
         dwt_starttx(DWT_START_TX_IMMEDIATE);
 
-        /* Poll DW1000 until TX frame sent event set. See NOTE 5 below.
-         * STATUS register is 5 bytes long but, as the event we are looking at is in the first byte of the register, we can use this simplest API
-         * function to access it.*/
+        /* 
+         *  Poll DW1000 until TX frame sent event set. See NOTE 5 below.
+         *  STATUS register is 5 bytes long but, as the event we are looking at is in 
+         *  the first byte of the register, we can use this simplest API
+         *  function to access it.
+         */
         while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
-        { };
+        { /* spin */ };
 
         /* Clear TX frame sent event. */
         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
