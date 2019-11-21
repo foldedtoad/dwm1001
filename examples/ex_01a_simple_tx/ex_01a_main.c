@@ -134,7 +134,7 @@ int dw_main(void)
  *    For development purposes it is possible to generate a DW1000 unique ID 
  *    by combining the Lot ID & Part Number values programmed into the
  *    DW1000 during its manufacture. However there is no guarantee this will 
- *    not conflict with someone else�s implementation. We recommended that
+ *    not conflict with someone else's implementation. We recommended that
  *    customers buy a block of addresses from the IEEE Registration Authority 
  *    for their production items. See "EUI" in the DW1000 User Manual.
  * 2. In this example, LDE microcode is not loaded upon calling dwt_initialise().
