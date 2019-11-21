@@ -170,6 +170,11 @@ int dwt_setlocaldataptr(unsigned int index)
 #define VTEMP_ADDRESS  (0x09)
 #define XTRIM_ADDRESS  (0x1E)
 
+#define LOG_LEVEL 3
+#include <logging/log.h>
+LOG_MODULE_REGISTER(deca_device);
+
+
 int dwt_initialise(int config)
 {
     uint16 otp_xtaltrim_and_rev = 0;
@@ -189,10 +194,12 @@ int dwt_initialise(int config)
 #endif
 
     // Read and validate device ID, return -1 if not recognised
-    if (DWT_DEVICE_ID != dwt_readdevid()) // MP IC ONLY (i.e. DW1000) FOR THIS CODE
+    u32_t device_id = dwt_readdevid();
+    if (DWT_DEVICE_ID != device_id) // MP IC ONLY (i.e. DW1000) FOR THIS CODE
     {
         return DWT_ERROR ;
     }
+    LOG_INF("device_id: %08x", device_id);
 
     if(!(DWT_DW_WAKE_UP & config)) // Don't reset the device if DWT_DW_WAKE_UP bit is set, e.g. when calling this API after wake up
     {
@@ -313,7 +320,8 @@ int dwt_initialise(int config)
 
     _dwt_enableclocks(ENABLE_ALL_SEQ); // Enable clocks for sequencing
 
-    // The 3 bits in AON CFG1 register must be cleared to ensure proper operation of the DW1000 in DEEPSLEEP mode.
+    // The 3 bits in AON CFG1 register must be cleared to ensure proper 
+    // operation of the DW1000 in DEEPSLEEP mode.
     dwt_write8bitoffsetreg(AON_ID, AON_CFG1_OFFSET, 0x00);
 
     // Read system register / store local copy
@@ -323,7 +331,6 @@ int dwt_initialise(int config)
     pdw1000local->txFCTRL = dwt_read32bitreg(TX_FCTRL_ID) ;
 
     return DWT_SUCCESS ;
-
 } // end dwt_initialise()
 
 /*! ------------------------------------------------------------------------------------------------------------------
@@ -698,6 +705,7 @@ void dwt_configure(dwt_config_t *config)
     pdw1000local->sysCFGreg |= (SYS_CFG_PHR_MODE_11 & ((uint32)config->phrMode << SYS_CFG_PHR_MODE_SHFT));
 
     dwt_write32bitreg(SYS_CFG_ID,pdw1000local->sysCFGreg) ;
+
     // Set the lde_replicaCoeff
     dwt_write16bitoffsetreg(LDE_IF_ID, LDE_REPC_OFFSET, reg16) ;
 

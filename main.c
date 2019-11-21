@@ -17,15 +17,28 @@
  *   along with Zephyr-DWM1001.  If not, see <https://www.gnu.org/licenses/>.
  * 
  */
+#include <zephyr.h>
+#include <misc/printk.h>
+
+#define STACKSIZE 1024
+#define PRIORITY 7
+#define DELAY_TIME   K_MSEC(1000)
 
 extern int dw_main(void);
 
-int main(void)
+/*---------------------------------------------------------------------------*/
+/*                                                                           */
+/*---------------------------------------------------------------------------*/
+void main_thread(void * id, void * unused1, void * unused2)
 {
-  dw_main();
+    printk("%s\n", __func__);
 
-  while(1)
-  {}
+    k_sleep(DELAY_TIME);
+
+	dw_main();
+
+	while(1) { /* spin */}
 }
 
-/* EOF */
+K_THREAD_DEFINE(main_id, STACKSIZE, main_thread, 
+                NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);

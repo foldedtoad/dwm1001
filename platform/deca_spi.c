@@ -24,9 +24,15 @@
 #include <drivers/spi.h>
 #include <drivers/gpio.h>
 
+#define LOG_LEVEL 3
+#include <logging/log.h>
+LOG_MODULE_REGISTER(deca_spi);
+
 struct device * spi;
 struct spi_config * spi_cfg;
 struct spi_config   spi_cfgs [4] = {0};
+
+#define SPI_CFGS_COUNT ((sizeof(spi_cfgs)/sizeof(spi_cfgs[0])))
 
 uint8_t tx_buf [255];
 uint8_t rx_buf [255];
@@ -54,13 +60,15 @@ static struct spi_cs_control cs_ctrl;
  */
 int openspi(void)
 {
-    spi_cfg = &spi_cfgs[0];
-
-    /* Do CS configuration */
+    /* Propagate CS config into all spi_cfgs[] elements */
     cs_ctrl.gpio_dev = device_get_binding(DT_NORDIC_NRF_SPI_SPI_1_CS_GPIOS_CONTROLLER);
     cs_ctrl.gpio_pin = DT_INST_0_NORDIC_NRF_SPI_CS_GPIOS_PIN;
     cs_ctrl.delay = 0U;
-    spi_cfg->cs = &(cs_ctrl);
+    for (int i=0; i < SPI_CFGS_COUNT; i++) {
+        spi_cfgs[i].cs = &cs_ctrl;
+    }
+
+    spi_cfg = &spi_cfgs[0];
 
     spi = device_get_binding(DT_SPI_1_NAME);
     if (!spi) {
@@ -121,12 +129,17 @@ int closespi(void)
  * Takes two separate byte buffers for write header and write data
  * returns 0 for success
  */
-int writetospi(uint16 headerLength,
+int writetospi(uint16           headerLength,
                const    uint8 * headerBuffer,
                uint32           bodyLength,
                const    uint8 * bodyBuffer)
 {
     decaIrqStatus_t  stat;
+
+#if 0
+    LOG_HEXDUMP_INF(headerBuffer, headerLength, "writetospi: Header");
+    LOG_HEXDUMP_INF(bodyBuffer, bodyLength, "writetospi: Body");
+#endif
 
     stat = decamutexon();
 
@@ -151,25 +164,31 @@ int writetospi(uint16 headerLength,
  * returns the offset into read buffer where first byte of read data 
  * may be found, or returns 0
  */
-int readfromspi(uint16 headerLength,
+int readfromspi(uint16        headerLength,
                 const uint8 * headerBuffer,
-                uint32        readlength,
+                uint32        readLength,
                 uint8       * readBuffer)
 {
     decaIrqStatus_t  stat;
 
     stat = decamutexon();
 
-    memset(&tx_buf[0], 0, headerLength + readlength);
+    memset(&tx_buf[0], 0, headerLength + readLength);
     memcpy(&tx_buf[0], headerBuffer, headerLength);
 
-    bufs[0].len = headerLength + readlength;
-    bufs[1].len = headerLength + readlength;
+    bufs[0].len = headerLength + readLength;
+    bufs[1].len = headerLength + readLength;
+
     spi_transceive(spi, spi_cfg, &tx, &rx);
 
-    memcpy(readBuffer, rx_buf + headerLength, readlength);
+    memcpy(readBuffer, rx_buf + headerLength, readLength);
 
     decamutexoff(stat);
+
+#if 0
+    LOG_HEXDUMP_INF(headerBuffer, headerLength, "readfromspi: Header");
+    LOG_HEXDUMP_INF(readBuffer, readLength, "readfromspi: Body");
+#endif
 
     return 0;
 }
