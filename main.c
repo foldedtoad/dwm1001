@@ -21,7 +21,7 @@
 #include <misc/printk.h>
 
 #define STACKSIZE 1024
-#define PRIORITY 7
+#define PRIORITY 99
 #define DELAY_TIME   K_MSEC(1000)
 
 extern int dw_main(void);

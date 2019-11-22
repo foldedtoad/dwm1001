@@ -84,11 +84,14 @@ int dw_main(void)
      * performance.
      */
     reset_DW1000(); /* Target specific drive of RSTn line into DW1000 low for a period. */
+
     port_set_dw1000_slowrate();
+
     if (dwt_initialise(DWT_LOADNONE) == DWT_ERROR) {
         printk("INIT FAILED");
         while (1) { /* spin */ };
     }
+
     port_set_dw1000_fastrate();
 
     /* This is put here for testing, so that we can see the 

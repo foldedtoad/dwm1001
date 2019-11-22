@@ -17,12 +17,16 @@
 #include "deca_spi.h"
 #include "port.h"
 
+//zephyr includes
+#include <zephyr.h>
+#include <misc/printk.h>
+
 #define LOG_LEVEL 3
 #include <logging/log.h>
 LOG_MODULE_REGISTER(main);
 
 /* Example application name and version to display on console. */
-#define APP_NAME "SIMPLE RX v1.3"
+#define APP_NAME "SIMPLE RX v1.3\n"
 
 /* Default communication configuration. */
 static dwt_config_t config = {
@@ -74,8 +78,8 @@ int dw_main(void)
     if (dwt_initialise(DWT_LOADNONE) == DWT_ERROR)
     {
         printk("INIT FAILED");
-        while (1)
-        { };
+        k_sleep(K_MSEC(500)); // allow logging to run.
+        while (1) { /* spin */};
     }
     port_set_dw1000_fastrate();
 
@@ -85,10 +89,10 @@ int dw_main(void)
     /* Configure DW1000 LEDs */
     dwt_setleds(1);
 
+    k_yield();
+
     /* Loop forever receiving frames. */
-    while (1)
-    {
-        int i;
+    while (1) {
 
         /* TESTING BREAKPOINT LOCATION #1 */
 
@@ -99,8 +103,7 @@ int dw_main(void)
          * and if a good receive has happened the data buffer will have the data 
          * in it, and frame_len will be set to the length of the RX frame. 
          */
-        for (i = 0 ; i < FRAME_LEN_MAX; i++ )
-        {
+        for (int i = 0 ; i < FRAME_LEN_MAX; i++ ) {
             rx_buffer[i] = 0;
         }
 
@@ -112,31 +115,27 @@ int dw_main(void)
          * STATUS register is 5 bytes long but, as the event we are looking at 
          * is in the first byte of the register, we can use this simplest API
          * function to access it. */
-        while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_ERR)))
-        { };
+        while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & 
+                 (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_ERR))) { /* spin */ };
 
-        if (status_reg & SYS_STATUS_RXFCG)
-        {
+        if (status_reg & SYS_STATUS_RXFCG) {
+
             /* A frame has been received, copy it to our local buffer. */
             frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFL_MASK_1023;
-            if (frame_len <= FRAME_LEN_MAX)
-            {
+            if (frame_len <= FRAME_LEN_MAX) {
                 dwt_readrxdata(rx_buffer, frame_len, 0);
+#if 1
+                LOG_HEXDUMP_INF(rx_buffer, frame_len, "received data");
+#endif
             }
 
             /* Clear good RX frame event in the DW1000 status register. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
         }
-        else
-        {
+        else {
             /* Clear RX error events in the DW1000 status register. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
         }
-
-#if 1
-        LOG_HEXDUMP_INF(rx_buffer, frame_len, "received data");
-#endif
-
     }
 }
 #endif /* EX_02A_DEF */
