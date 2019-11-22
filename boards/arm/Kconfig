@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_DEPRECATED
+	string
+	help
+	  This hidden option is set in the board configuration and indicates
+	  the Zephyr release that the board configuration will be removed.
+	  When set, any build for that board will generate a clearly visible
+	  deprecation warning.
+
+config QEMU_TARGET
+	bool
+	help
+	  Mark all QEMU targets with this variable for checking whether we are
+	  running in an emulated environment.
+
+# Note: $BOARD_DIR might be a glob pattern
+
+choice
+prompt "Board Selection"
+source "$(BOARD_DIR)/Kconfig.board"
+endchoice
+
+
+menu "Board Options"
+# There might not be any board options, hence the optional source
+osource "$(BOARD_DIR)/Kconfig"
+endmenu
