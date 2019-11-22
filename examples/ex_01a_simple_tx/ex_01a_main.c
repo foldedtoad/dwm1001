@@ -29,7 +29,7 @@ LOG_MODULE_REGISTER(main);
 extern int dw_main(void);
 
 /* Example application name and version to display on console. */
-#define APP_NAME "SIMPLE TX v1.3"
+#define APP_NAME "SIMPLE TX v1.3\n"
 
 /* Default communication configuration. */
 static dwt_config_t config = {        
@@ -66,8 +66,7 @@ static uint8 tx_msg[] = {0xC5, 0, 'D', 'E', 'C', 'A', 'W', 'A', 'V', 'E', 0, 0};
 int dw_main(void)
 {
     /* Display application name on console. */
-    LOG_INF("%s", APP_NAME);
-    //k_sleep(K_MSEC(10)); // allow logging to run.
+    printk(APP_NAME);
 
     /* Reset and initialise DW1000. See NOTE 2 below.
      * For initialisation, DW1000 clocks must be temporarily set to crystal speed. 
@@ -83,8 +82,7 @@ int dw_main(void)
     {
         printk("INIT FAILED");
         k_sleep(K_MSEC(500)); // allow logging to run.
-        while (1)
-        { /* spin */ };
+        while (1) { /* spin */ };
     }
 
     port_set_dw1000_fastrate();
@@ -95,9 +93,10 @@ int dw_main(void)
     /* Configure DW1000 LEDs */
     dwt_setleds(1);
 
+    k_yield();
+
     /* Loop forever sending frames periodically. */
-    while (1)
-    {
+    while (1) {
         /* Write frame data to DW1000 and prepare transmission. See NOTE 4 below.*/
         dwt_writetxdata(sizeof(tx_msg), tx_msg, 0); /* Zero offset in TX buffer. */
         dwt_writetxfctrl(sizeof(tx_msg), 0, 0); /* Zero offset in TX buffer, no ranging. */
@@ -112,7 +111,7 @@ int dw_main(void)
          *  function to access it.
          */
         while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
-        { /* spin */  k_sleep(K_MSEC(500)); };
+        { /* spin */ };
 
         /* Clear TX frame sent event. */
         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
