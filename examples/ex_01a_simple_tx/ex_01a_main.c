@@ -32,7 +32,7 @@ extern int dw_main(void);
 #define APP_NAME "SIMPLE TX v1.3\n"
 
 /* Default communication configuration. */
-static dwt_config_t config = {        
+static dwt_config_t config = {
     5,               /* Channel number. */
     DWT_PRF_64M,     /* Pulse repetition frequency. */
     DWT_PLEN_128,    /* Preamble length. Used in TX only. */

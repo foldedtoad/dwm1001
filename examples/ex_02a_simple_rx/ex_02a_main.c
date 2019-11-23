@@ -39,7 +39,8 @@ static dwt_config_t config = {
     1,               /* 0 to use standard SFD, 1 to use non-standard SFD. */
     DWT_BR_6M8,      /* Data rate. */
     DWT_PHRMODE_EXT, /* PHY header mode. */
-    (129)            /* SFD timeout (preamble length + 1 + SFD length - PAC size). Used in RX only. */
+    (129)            /* SFD timeout (preamble length + 1 + SFD length - PAC size).
+                      * Used in RX only. */
 };
 
 /* Buffer to store received frame. See NOTE 1 below. */
@@ -71,7 +72,9 @@ int dw_main(void)
      * For initialisation, DW1000 clocks must be temporarily set to crystal speed.
      * After initialisation SPI rate can be increased for optimum performance. 
      */
-    reset_DW1000(); /* Target specific drive of RSTn line into DW1000 low for a period. */
+
+	/* Target specific drive of RSTn line into DW1000 low for a period. */
+    reset_DW1000(); 
 
     port_set_dw1000_slowrate();
 
