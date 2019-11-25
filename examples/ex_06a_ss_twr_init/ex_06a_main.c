@@ -47,7 +47,7 @@ LOG_MODULE_REGISTER(main);
 /* Inter-ranging delay period, in milliseconds. */
 #define RNG_DELAY_MS 1000
 
-/* Default communication configuration. */                                                                   
+/* Default communication configuration. */
 static dwt_config_t config = {
     5,               /* Channel number. */
     DWT_PRF_64M,     /* Pulse repetition frequency. */
@@ -87,15 +87,21 @@ static uint8 rx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A',
 static uint8 frame_seq_nb = 0;
 
 /* Buffer to store received response message.
- * Its size is adjusted to longest frame that this example code is supposed to handle. */
+ * Its size is adjusted to longest frame that this example code is 
+ * supposed to handle.
+ */
 #define RX_BUF_LEN 20
 static uint8 rx_buffer[RX_BUF_LEN];
 
-/* Hold copy of status register state here for reference so that it can be examined at a debug breakpoint. */
+/* Hold copy of status register state here for reference so that it 
+ * can be examined at a debug breakpoint.
+ */
 static uint32 status_reg = 0;
 
-/* UWB microsecond (uus) to device time unit (dtu, around 15.65 ps) conversion factor.
- * 1 uus = 512 / 499.2 �s and 1 �s = 499.2 * 128 dtu. */
+/* UWB microsecond (uus) to device time unit (dtu, around 15.65 psec) 
+ * conversion factor.
+ * 1 uus = 512 / 499.2 usec and 1 usec = 499.2 * 128 dtu.
+ */
 #define UUS_TO_DWT_TIME 65536
 
 /* Delay between frames, in UWB microseconds. See NOTE 1 below. */
@@ -106,7 +112,9 @@ static uint32 status_reg = 0;
 /* Speed of light in air, in metres per second. */
 #define SPEED_OF_LIGHT 299702547
 
-/* Hold copies of computed time of flight and distance here for reference so that it can be examined at a debug breakpoint. */
+/* Hold copies of computed time of flight and distance here for reference 
+ * so that it can be examined at a debug breakpoint.
+ */
 static double tof;
 static double distance;
 
@@ -116,7 +124,7 @@ char dist_str[16] = {0};
 /* Declaration of static functions. */
 static void resp_msg_get_ts(uint8 *ts_field, uint32 *ts);
 
-/*! ------------------------------------------------------------------------------------------------------------------
+/*! --------------------------------------------------------------------------
  * @fn main()
  *
  * @brief Application entry point.
@@ -184,7 +192,7 @@ int dw_main(void) {
         /* Zero offset in TX buffer, ranging. */
         dwt_writetxfctrl(sizeof(tx_poll_msg), 0, 1); 
 
-        /* Start transmission, indicating that a response is expected so that 
+        /* Start transmission, indicating that a response is expected so that
          * reception is enabled automatically after the frame is sent and the delay
          * set by dwt_setrxaftertxdelay() has elapsed.
          */
@@ -261,8 +269,14 @@ int dw_main(void) {
             }
         }
         else {
-            printk("err\n");
-            
+
+            if (status_reg & SYS_STATUS_ALL_RX_TO) {
+                printk("timeout: %08lx\n", status_reg);
+            }
+            else {
+                printk("error: %08lx\n", status_reg);      
+            }
+
             /* Clear RX error/timeout events in the DW1000 status register. */
             dwt_write32bitreg(SYS_STATUS_ID, (SYS_STATUS_ALL_RX_TO |
                                               SYS_STATUS_ALL_RX_ERR));

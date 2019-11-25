@@ -44,18 +44,18 @@ LOG_MODULE_REGISTER(main);
 #define APP_NAME "SS TWR RESP v1.3\n"
 
 /* Default communication configuration. */
-static dwt_config_t config = {                                                                        
+static dwt_config_t config = {
     5,               /* Channel number. */
-    DWT_PRF_64M,     /* Pulse repetition frequency. */                                                
-    DWT_PLEN_128,    /* Preamble length. Used in TX only. */                                           
-    DWT_PAC8,        /* Preamble acquisition chunk size. Used in RX only. */                           
-    9,               /* TX preamble code. Used in TX only. */                                         
+    DWT_PRF_64M,     /* Pulse repetition frequency. */
+    DWT_PLEN_128,    /* Preamble length. Used in TX only. */
+    DWT_PAC8,        /* Preamble acquisition chunk size. Used in RX only. */
+    9,               /* TX preamble code. Used in TX only. */
     9,               /* RX preamble code. Used in RX only. */
-    1,               /* 0 to use standard SFD, 1 to use non-standard SFD. */                          
+    1,               /* 0 to use standard SFD, 1 to use non-standard SFD. */
     DWT_BR_6M8,      /* Data rate. */
     DWT_PHRMODE_EXT, /* PHY header mode. */
-    (129)            /* SFD timeout (preamble length + 1 + SFD length -
-                      * PAC size). Used in RX only. */           
+    (129)            /* SFD timeout (preamble length + 1 + SFD length - PAC size). 
+                        Used in RX only. */           
 };
 
 /* Default antenna delay values for 64 MHz PRF. See NOTE 2 below. */
@@ -114,7 +114,7 @@ static uint64 resp_tx_ts;
 static uint64 get_rx_timestamp_u64(void);
 static void resp_msg_set_ts(uint8 *ts_field, const uint64 ts);
 
-/*! ------------------------------------------------------------------------------------------------------------------
+/*! --------------------------------------------------------------------------
  * @fn main()
  *
  * @brief Application entry point.
@@ -140,8 +140,7 @@ int dw_main(void)
     reset_DW1000();
 
     port_set_dw1000_slowrate();
-    if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
-    {
+    if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR) {
         printk("INIT FAILED");
         k_sleep(K_MSEC(500)); // allow logging to run.
         while (1) { };
@@ -175,6 +174,8 @@ int dw_main(void)
         if (status_reg & SYS_STATUS_RXFCG) {
 
             uint32 frame_len;
+
+            printk("received frame\n");
 
             /* Clear good RX frame event in the DW1000 status register. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
@@ -245,8 +246,7 @@ int dw_main(void)
                 }
             }
         }
-        else
-        {
+        else {
             /* Clear RX error events in the DW1000 status register. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
 

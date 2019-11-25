@@ -26,6 +26,28 @@
 
 extern int dw_main(void);
 
+
+#ifdef CONFIG_BT
+/*---------------------------------------------------------------------------*/
+/*                                                                           */
+/*---------------------------------------------------------------------------*/
+#include "ble_device.h"
+
+void bluetooth_thread(void * id, void * unused1, void * unused2)
+{
+    printk("%s\n", __func__);
+
+    k_sleep( K_MSEC(500));
+
+	ble_device_init();
+
+	while(1) { /* spin */}
+}
+
+K_THREAD_DEFINE(bluetooth_id, STACKSIZE, bluetooth_thread, 
+                NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
+#endif
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
@@ -33,7 +55,7 @@ void main_thread(void * id, void * unused1, void * unused2)
 {
     printk("%s\n", __func__);
 
-    k_sleep(DELAY_TIME);
+    k_sleep( K_MSEC(1000));
 
 	dw_main();
 
