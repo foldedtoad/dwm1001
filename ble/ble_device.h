@@ -22,7 +22,7 @@ typedef enum {
 	BLE_CMD__LAST
 } ble_cmd_t;
 
-#define MAX_DEVICEID_STRING_LEN 16
+#define MAX_DEVICEID_STRING_LEN 20
 
 extern int  DeviceIdLen;
 extern char DeviceId [MAX_DEVICEID_STRING_LEN];
