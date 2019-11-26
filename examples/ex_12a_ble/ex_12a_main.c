@@ -18,11 +18,12 @@
  * 
  */
 
-/*! ----------------------------------------------------------------------------
+/*! --------------------------------------------------------------------------
  *  @file   ex_12a_main.c
  *  @brief  Example of usage BLE - DPS Gatt Profile.
  *          In this example 2 (fake) distances are outputted every 300ms. 
- *          The nodeID of this tag is 1. The 2 faked tags have nodeID 2 and nodeID3.
+ *          The nodeID of this tag is 1. The 2 faked tags have nodeID 2 and 
+ *          nodeID3.
  *  @author RTLOC
  */
 
@@ -37,11 +38,15 @@
 #include "deca_spi.h"
 #include "port.h"
 
-#include "ble_dwm1001.h"
+#include "ble_device.h"
+
+#define LOG_LEVEL 3
+#include <logging/log.h>
+LOG_MODULE_REGISTER(main);
 
 /* Example application name and version to display on console. */
 #define APP_HEADER "\nDWM1001 & Zephyr\n"
-#define APP_NAME "Example 12a - BLE DPS Profile (faked distances)\n"
+#define APP_NAME    "Example 12a - BLE DPS Profile (faked distances)\n"
 #define APP_VERSION "Version - 1.0.0\n"
 #define APP_VERSION_NUM 0x010000
 #define APP_LINE "=================\n"
@@ -57,7 +62,7 @@ static float distance1 = 0.0f;
 static float distance2 = 3.0f;
 static float temp = 0.1f;
 
-/*! ------------------------------------------------------------------------------------------------------------------
+/*! --------------------------------------------------------------------------
  * @fn main()
  *
  * @brief Application entry point.
@@ -75,28 +80,18 @@ int dw_main(void)
     printk(APP_LINE);
 
     /* BLE Configuration */
-    ble_reps_t *ble_reps; 
+    ble_reps_t * ble_reps; 
     uint8_t ble_buf[120] = {0};
     ble_reps = (ble_reps_t *)(&ble_buf[0]);
 
-    ble_device_info_t devinfo;
-    memset(&devinfo, 0, sizeof(ble_device_info_t));
-    devinfo.uid = APP_UID;
-    devinfo.hw_ver = APP_HW;
-    devinfo.fw1_ver = APP_VERSION_NUM;
-
-    ble_dwm1001_set_devinfo(&devinfo);
-    ble_dwm1001_enable();
-
-
     /* Loop forever responding to ranging requests. */
-    while (1)
-    {
+    while (1) {
+
         /* Increase distances */
         temp += 0.01f;
 
-        distance1 = MAX_DIST1+MAX_DIST1*cos(temp*PI);
-        distance2 = MAX_DIST2+MAX_DIST2*sin(temp*PI);
+        distance1 = MAX_DIST1 + MAX_DIST1 * cos(temp* PI);
+        distance2 = MAX_DIST2 + MAX_DIST2 * sin(temp* PI);
 
         /* Display faked distance on console. */
         printk("dist: %3.2f, dist2: %3.2f m\n", distance1, distance2);
@@ -112,7 +107,7 @@ int dw_main(void)
         ble_reps->ble_rep[1].tqf = 0;
 
         /* Send to BLE layer */
-        ble_dwm1001_dps(ble_buf, 1 + sizeof(ble_rep_t)*ble_reps->cnt);  
+        dwm1001_notify((uint8_t*)ble_buf, 1 + sizeof(ble_rep_t) * ble_reps->cnt);
         
         /* Sleep for 0.3s */
         Sleep(300); 
