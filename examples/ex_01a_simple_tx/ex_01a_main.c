@@ -51,7 +51,8 @@ static dwt_config_t config = {
  *     - byte 0: frame type (0xC5 for a blink).
  *     - byte 1: sequence number, incremented for each new frame.
  *     - byte 2 -> 9: device ID, see NOTE 1 below.
- *     - byte 10/11: frame check-sum, automatically set by DW1000.  */
+ *     - byte 10/11: frame check-sum, automatically set by DW1000.
+ */
 static uint8 tx_msg[] = {0xC5, 0, 'D', 'E', 'C', 'A', 'W', 'A', 'V', 'E', 0, 0};
 
 /* Index to access to sequence number of the blink frame in the tx_msg array. */
@@ -78,10 +79,9 @@ int dw_main(void)
     /* Configure DW1000 SPI */
     openspi();
 
-    if (dwt_initialise(DWT_LOADNONE) == DWT_ERROR)
-    {
+    if (dwt_initialise(DWT_LOADNONE) == DWT_ERROR) {
         printk("INIT FAILED");
-        k_sleep(K_MSEC(500)); // allow logging to run.
+        k_sleep(K_MSEC(500));
         while (1) { /* spin */ };
     }
 
