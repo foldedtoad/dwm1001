@@ -48,7 +48,7 @@ static dwt_config_t config = {
     DWT_BR_6M8,      /* Data rate. */
     DWT_PHRMODE_EXT, /* PHY header mode. */
     (129)            /* SFD timeout (preamble length + 1 + SFD length - PAC size). 
-                        Used in RX only. */           
+                      * Used in RX only. */           
 };
 
 /* As "TX then wait for a response" example sends a blink message encoded as 
@@ -135,7 +135,7 @@ int dw_main(void)
 
     /* Configure DW1000 LEDs */
     dwt_setleds(1);
-    
+
     k_yield();
 
     /* Loop forever sending and receiving frames periodically. */
