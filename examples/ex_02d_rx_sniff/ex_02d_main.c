@@ -136,7 +136,8 @@ int dw_main(void)
          * high byte here, so we read a more manageable 32-bits with this API call.
          */
         while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & 
-                (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_ERR)))   { /* spin */ };
+                (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_ERR)))
+        { /* spin */ };
 
         if (status_reg & SYS_STATUS_RXFCG) {
             /* Clear good RX frame event in the DW1000 status register. */

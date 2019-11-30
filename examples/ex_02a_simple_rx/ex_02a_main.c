@@ -12,6 +12,7 @@
  * @author Decawave
  */
 #ifdef EX_02A_DEF
+
 #include "deca_device_api.h"
 #include "deca_regs.h"
 #include "deca_spi.h"
