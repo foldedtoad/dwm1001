@@ -1,4 +1,4 @@
-/*! ----------------------------------------------------------------------------
+/*! --------------------------------------------------------------------------
  *  @file    ex_11a_main.c
  *  @brief   Example of button usage. Simple callback on button press.
  * Copyright 2019 (c) Frederic Mes, RTLOC.
@@ -7,24 +7,41 @@
  *
  */
 #include <zephyr.h>
-#include <device.h>
-#include <gpio.h>
+//#include <device.h>
+#include <drivers/gpio.h>
+#include <misc/printk.h>
+
+#define LOG_LEVEL 3
+#include <logging/log.h>
+LOG_MODULE_REGISTER(main);
 
 /* Defines */
-#define APP_HEADER "\nDWM1001 & Zephyr\n"
-#define APP_NAME "Example 11a - BUTTON\n"
+#define APP_HEADER  "\nDWM1001 & Zephyr\n"
+#define APP_NAME    "Example 11a - BUTTON\n"
 #define APP_VERSION "Version - 1.3\n"
-#define APP_LINE "=================\n"
+#define APP_LINE    "=================\n"
 
-#define PIN_BUTTON	2
+/* 
+ * See ./build/zephyr/include/generated/generated_dts_board.conf for details
+ */
+#define BUTTON_GPIO_CONTROLLER_NAME		DT_ALIAS_SW0_GPIOS_CONTROLLER
+#define BUTTON_0_PIN					DT_GPIO_KEYS_BUTTON_0_GPIOS_PIN
 
 static struct gpio_callback gpio_cb;
-struct device *gpiob;
+static struct device * gpiob;
 
-/* Button Pressed callback */
-void button_pressed(struct device *gpiob, struct gpio_callback *cb, u32_t pins)
+/* Button event callback */
+static void button_event(struct device * gpiob, 
+	                     struct gpio_callback * cb, 
+	                     u32_t pins)
 {
-	printk("Button pressed at %d\n", k_cycle_get_32());
+	int button_state;
+
+	gpio_pin_read(gpiob, BUTTON_0_PIN, &button_state);
+
+	printk("Button %s cycle count %u\n", 
+		   button_state ?  "released:" : "pressed: ", 
+		   k_cycle_get_32());
 }
 
 /**
@@ -39,18 +56,25 @@ int dw_main(void)
     printk(APP_LINE);
 	
 	/* Get GPIO device binding */
-	gpiob = device_get_binding(SW0_GPIO_CONTROLLER);
+	gpiob = device_get_binding(BUTTON_GPIO_CONTROLLER_NAME);
 	if (!gpiob) {
 		printk("error\n");
 		return -1;
 	}
 
 	/* Init Button Interrupt */
-	gpio_pin_configure(gpiob, PIN_BUTTON,
-			   GPIO_DIR_IN | GPIO_INT |  GPIO_PUD_PULL_UP | GPIO_INT_EDGE | GPIO_INT_ACTIVE_HIGH);
-	gpio_init_callback(&gpio_cb, button_pressed, BIT(2));
+	gpio_pin_configure(gpiob, BUTTON_0_PIN,
+			            GPIO_DIR_IN | 
+			            GPIO_INT |  
+			            GPIO_PUD_PULL_UP | 
+			            GPIO_INT_EDGE | 
+			            GPIO_INT_DOUBLE_EDGE );
+
+	gpio_init_callback(&gpio_cb, button_event, BIT(BUTTON_0_PIN));
+
 	gpio_add_callback(gpiob, &gpio_cb);
-	gpio_pin_enable_callback(gpiob, 2);
+
+	gpio_pin_enable_callback(gpiob, BUTTON_0_PIN);
 
 	return 0;
 }

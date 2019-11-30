@@ -79,10 +79,9 @@ int dw_main(void)
 
     port_set_dw1000_slowrate();
 
-    if (dwt_initialise(DWT_LOADNONE) == DWT_ERROR)
-    {
+    if (dwt_initialise(DWT_LOADNONE) == DWT_ERROR) {
         printk("INIT FAILED");
-        k_sleep(K_MSEC(500)); // allow logging to run.
+        k_sleep(K_MSEC(500)); 
         while (1) { /* spin */};
     }
     port_set_dw1000_fastrate();
