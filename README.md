@@ -3,7 +3,9 @@ This project contains examples on how to use the Ultra Wideband (UWB) and Blueto
 
 This project is a clone of the Decawave's Zephyr project, in response to the original code not being buildable with the latest versions of Zephyr. 
 
-The major changes are:
+This project assumes some familiarity with Zephyr.  Zephyr is not too difficult to install and learn, but there are good tutorials available which explain how to establish a working version of Zephyr on your development system.
+
+The major changes from the original Decawave project are:
 
 * Change to using a custom board profile. This allows the nrf52_dwm1001 board to be defined within this project, thereby eliminating the need for adding the board defintion in the base Zephyr sources.
 
