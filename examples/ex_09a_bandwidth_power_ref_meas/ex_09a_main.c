@@ -128,22 +128,26 @@ int dw_main(void)
     k_yield();
 
     /* End here. */
+
     /* Display the temperature, power register, PG_DELAY register and 
      * PGC_STATUS register on the console
      */
     while (1) {
 
-        sprintf(console_str, "Raw Temp: %x  ", ref_temp);
-        printk("%s", console_str);
+        sprintf(console_str, "Raw Temp: 0x%x  ", ref_temp);
+        printk("%s\n", console_str);
         deca_sleep(2000);
-        sprintf(console_str, "Power: %x   ", (unsigned)ref_power);
-        printk("%s", console_str);
+
+        sprintf(console_str, "Power: 0x%x   ", (unsigned)ref_power);
+        printk("%s\n", console_str);
         deca_sleep(2000);
-        sprintf(console_str, "PG_DELAY: %02x   ", (unsigned)ref_pgdelay);
-        printk("%s", console_str);
+
+        sprintf(console_str, "PG_DELAY: 0x%02x   ", (unsigned)ref_pgdelay);
+        printk("%s\n", console_str);
         deca_sleep(2000);
-        sprintf(console_str, "PG_COUNT: %x   ", (unsigned)ref_pgcount);
-        printk("%s", console_str);
+
+        sprintf(console_str, "PG_COUNT: 0x%x   ", (unsigned)ref_pgcount);
+        printk("%s\n", console_str);
         deca_sleep(2000);
 
     };

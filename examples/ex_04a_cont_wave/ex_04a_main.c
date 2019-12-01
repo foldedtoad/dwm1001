@@ -112,7 +112,7 @@ int dw_main(void)
 }
 #endif /* EX_04A_DEF */
 
-/******************************************************************************s
+/******************************************************************************
  * NOTES:
  *
  * 1. In this example, LDE microcode is not loaded upon calling dwt_initialise(). 
