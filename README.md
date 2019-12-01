@@ -1,40 +1,59 @@
 # DWM1001 & Zephyr
-This project contains examples on how to use the Ultra Wideband (UWB) and Bluetooth hardware based DWM1001 module together with Zephyr RTOS. It's an adaptation of Decawave's examples distributed along with their driver.
+This project contains examples on how to use the Ultra Wideband (UWB) and Bluetooth hardware based DWM1001 module together with Zephyr RTOS. It's an adaptation of Decawave's examples distributed along with their driver. 
 
-Note upfront: this readme isn't finished yet. It will be improved & extended the following days/weeks.
+This project is a clone of the Decawave's Zephyr project, in response to the original code not being buildable with the latest versions of Zephyr. 
+
+The major changes are:
+
+* Change to using a custom board profile. This allows the nrf52_dwm1001 board to be defined within this project, thereby eliminating the need for adding the board defintion in the base Zephyr sources.
+
+* Change hardware-related reference to Device Tree symbolics (some were already being used, but there were a few cases which needed to be converted.
+
+* The Bluetooth example has been completely replaced with a new example. The original BLE code used 16-bit, BLE-SIG defined UUIDs. This example used a custom 128-bit UUID for both the DWM1001 service and characteristics. This serves as a better starting-point example, as most developers will interested in custom BLE services/charactersistics. Please use the Nordic mobile utility "nrf-connect" to interact with this new version, or (better) write a mobile app.
+
+* The original code had comment lines which extended well past 80 columns.  This is very inconvienent for development within VMs on laptops. So the code has been reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
 
 ## Getting Started
 
 ## What's required?
 ### OS
-Linux, Mac or Windows!
+Linux, Mac or Windows
+
+This project was developed in a VirtualBox VM running Ubuntu 18.4 (LTS), but there is no reason it should work with the other OSes.
 
 ### Hardware
-You will need at least one `DWM1001-dev` board and a `micro-USB` cable.
+You will need at least one `DWM1001-dev` board and a `micro-USB` cable. 
+Many of the examples will require two boards or more boards, such as the micro-location examples.
+
+NOTE: Because the DWM1001 board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).
+
+Because this board incorporates JLink support, extensive use of Segger's RTT console support is used for logging.  This eliminates the need to configure and run a seperated UART-based console when developing.
+
+### Board Support (new)
+A major feature of this project is the defining of the DWM1001 board as part of this project. The original project from which this project was cloned, required the use of a special version of the Zephyr project which had the DWM1001 board definitions inserted into the base Zephyr project. Later versions of Zephyr now have a method for defining custom boards within a project, eliminating the need to modify (and maintain) Zephyr itself.
+
+
 
 ### Software
 There's quite a lot to install if you haven't already. First we're going to build the firmware, after which we can flash it on the board.
 
 #### Building
-Make sure you have `CMake` (min 3.13.1) and `ninja` installed on your PC. If you don't have these tools yet, follow the instructions from zephyr [here](https://docs.zephyrproject.org/latest/getting_started/index.html#set-up-a-development-system).
-Note that you don't really need 'west'.
+Follow the instructions from Zephyr [here](https://docs.zephyrproject.org/latest/getting_started/index.html#set-up-a-development-system).
 
-Next up is the `toolchain`. Instructions can be found here [here](https://docs.zephyrproject.org/latest/getting_started/index.html#set-up-a-toolchain). Best is to install GNU ARM Embedded as described. Pay attention not to install the toolchain into a path with spaces, and don't install version 8-2018-q4-major (both as described in the warnings). After configuring the environment variables you're almost good to go.
+Note: The toolchain is now provided in the latest version of Zephyr, so you will not need to install or build them yourself.
+This provides build-consistency across Zephyr projects.
+
+This project was developed using only `cmake`, not `west` or `ninja`, but you should be able to use them if you prefer.
 
 #### Flashing
 In order to flash the boards, you will need `nrfjprog`. This tool is also available on all 3 main OS's. You can find it [here](https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF5-Command-Line-Tools). After installing, make sure that your system PATH contains the path to where it is installed.
-Typically for Windows this is:
-```
-C:\Program Files\Nordic Semiconductor\nrf5x\bin
-```
+ram Files\Nordic Semiconductor\nrf5x\bin
 
 ### Zephyr 
-Now that the development system is set up, we just need Zephyr and the examples itself. They are spread over two github repositories. You can start by downloading the Zephyr distribution that contains the DWM1001 BSP:
+This version the DWM1001 suite does not require a special version of Zephyr, as it implements a custom board within this project. This is found under the project's root directory, "boards/arm/nrf52_dwm1001/". 
 
-Download or clone the zephyr distribution: 
-```
-git clone https://github.com/RT-LOC/zephyr
-```
+The CMakeList.txt file has been updated to reference these custom board definitions:  
+Please just install the latest standard Zephyr release and use it as described in the Zephyr documentation.
 
 Now change your active directory:
 ```
@@ -44,7 +63,7 @@ cd zephyr
 Now source the script zephyr-env.sh (linux & macOS) or run zephyr-env.cmd to make sure all the environment variables are set correctly.
 
 ### Build your first application
-The second github repository is the one that contains the specific DWM1001 example code.
+The github repository is the one that contains the specific DWM1001 example code.
 Download or clone this repository to your local computer:
 ```
 git clone https://github.com/RT-LOC/zephyr-dwm1001
