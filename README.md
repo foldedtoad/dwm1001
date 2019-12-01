@@ -1,4 +1,4 @@
-# DWM1001 & Zephyr
+# DWM1001 and Zephyr
 This project contains examples on how to use the Ultra Wideband (UWB) and Bluetooth hardware based DWM1001 module together with Zephyr RTOS. It's an adaptation of Decawave's examples distributed along with their driver. 
 
 This project is a clone of the Decawave's Zephyr project, in response to the original code not being buildable with the latest versions of Zephyr. 
@@ -7,9 +7,10 @@ The major changes are:
 
 * Change to using a custom board profile. This allows the nrf52_dwm1001 board to be defined within this project, thereby eliminating the need for adding the board defintion in the base Zephyr sources.
 
-* Change hardware-related reference to Device Tree symbolics (some were already being used, but there were a few cases which needed to be converted.
+* Change hardware-related reference to Device Tree Symbolics (DTS). Some DTS symbols were already being used, but there were a few cases which needed to be converted.
 
-* The Bluetooth example has been completely replaced with a new example. The original BLE code used 16-bit, BLE-SIG defined UUIDs. This example used a custom 128-bit UUID for both the DWM1001 service and characteristics. This serves as a better starting-point example, as most developers will interested in custom BLE services/charactersistics. Please use the Nordic mobile utility "nrf-connect" to interact with this new version, or (better) write a mobile app.
+* The Bluetooth example has been completely replaced with a new example. The original BLE support used what appeared to be a BLE-SIG defined UUID, named `dps`, a 16-bit UUID, which is no longer available in Zephyr.
+This example used a custom 128-bit UUID for both the DWM1001 service and characteristics. This serves as a better starting-point example, as most developers will interested in custom BLE services/charactersistics. Please use the Nordic mobile utility "nrf-connect" to interact with this new version, or (better) write a mobile app.
 
 * The original code had comment lines which extended well past 80 columns.  This is very inconvienent for development within VMs on laptops. So the code has been reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
 
@@ -19,7 +20,7 @@ The major changes are:
 ### OS
 Linux, Mac or Windows
 
-This project was developed in a VirtualBox VM running Ubuntu 18.4 (LTS), but there is no reason it should work with the other OSes.
+This project was developed in a VirtualBox VM running Ubuntu 18.04 (LTS), but there is no reason these changes should work with the other OSes.
 
 ### Hardware
 You will need at least one `DWM1001-dev` board and a `micro-USB` cable. 
@@ -32,7 +33,26 @@ Because this board incorporates JLink support, extensive use of Segger's RTT con
 ### Board Support (new)
 A major feature of this project is the defining of the DWM1001 board as part of this project. The original project from which this project was cloned, required the use of a special version of the Zephyr project which had the DWM1001 board definitions inserted into the base Zephyr project. Later versions of Zephyr now have a method for defining custom boards within a project, eliminating the need to modify (and maintain) Zephyr itself.
 
+Under this project's root directory, there is a the following file tree structure: 
 
+```
+boards/
+└── arm
+    └── nrf52_dwm1001
+        ├── board.cmake
+        ├── doc
+        ├── Kconfig
+        ├── Kconfig.board
+        ├── Kconfig.defconfig
+        ├── nrf52_dwm1001_defconfig
+        ├── nrf52_dwm1001.dts
+        └── nrf52_dwm1001.yaml
+```
+In each example sub-project, the CMakeList.txt file has been updated with the following statement. This defines and incoperates (merges) this custom board definition into the Zephyr board configuration process. 
+
+```
+ set(BOARD_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../..")
+```
 
 ### Software
 There's quite a lot to install if you haven't already. First we're going to build the firmware, after which we can flash it on the board.
