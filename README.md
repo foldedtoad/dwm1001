@@ -48,7 +48,7 @@ boards/
         ├── nrf52_dwm1001.dts
         └── nrf52_dwm1001.yaml
 ```
-In each example sub-project, the CMakeList.txt file has been updated with the following statement. This defines and incoperates (merges) this custom board definition into the Zephyr board configuration process. 
+In each example sub-project, the CMakeList.txt file has been updated with the following statement. This merges this custom board definition into the Zephyr board configuration process. 
 
 ```
  set(BOARD_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../..")
@@ -60,21 +60,23 @@ There's quite a lot to install if you haven't already. First we're going to buil
 #### Building
 Follow the instructions from Zephyr [here](https://docs.zephyrproject.org/latest/getting_started/index.html#set-up-a-development-system).
 
-Note: The toolchain is now provided in the latest version of Zephyr, so you will not need to install or build them yourself.
+NOTE: The toolchain is now provided in the latest version of Zephyr, so you will not need to install or build them yourself.
 This provides build-consistency across Zephyr projects.
 
 This project was developed using only `cmake`, not `west` or `ninja`, but you should be able to use them if you prefer.
 
 #### Flashing
-In order to flash the boards, you will need `nrfjprog`. This tool is also available on all 3 main OS's. You can find it [here](https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF5-Command-Line-Tools). After installing, make sure that your system PATH contains the path to where it is installed.
-ram Files\Nordic Semiconductor\nrf5x\bin
+There are two ways to flash one of the example project's firmware onto a DWM1001 board.
+* Use the debugger (gdb, Ozone, etc) to flash.
+* Use the Nordic-provided `nrfjprog` utility via running make: `make flash`
 
-### Zephyr 
-This version the DWM1001 suite does not require a special version of Zephyr, as it implements a custom board within this project. This is found under the project's root directory, "boards/arm/nrf52_dwm1001/". 
+In order to flash the boards with `nrfjprog` you will need to install `nrfjprog`. This tool is also available on all 3 main OS's. You can find it [here](https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRF5-Command-Line-Tools). After installing, make sure that your system PATH contains the path to where it is installed.
 
-The CMakeList.txt file has been updated to reference these custom board definitions:  
-Please just install the latest standard Zephyr release and use it as described in the Zephyr documentation.
+After installing `nrfjprog`, quickest way is probably using `make flash`. 
+But note, this does not allow you to see the console messages.
+If you are developing a new project or modifying an existig project, the you will probably be using an debugger with some form of graphical interface. 
 
+### Zephyr Environment Variables
 Now change your active directory:
 ```
 cd zephyr
@@ -82,33 +84,32 @@ cd zephyr
 
 Now source the script zephyr-env.sh (linux & macOS) or run zephyr-env.cmd to make sure all the environment variables are set correctly.
 
-### Build your first application
+### Build Your First Application
 The github repository is the one that contains the specific DWM1001 example code.
-Download or clone this repository to your local computer:
+Download or clone [this](https://github.com/foldedtoad/dwm1001) repository to your local computer:
 ```
-git clone https://github.com/RT-LOC/zephyr-dwm1001
+git clone https://github.com/foldedtoad/dwm1001.git
 ```
+NOTE: The original code can be found [here](https://github.com/RT-LOC/zephyr-dwm1001)
 
-Now that we have installed zephyr, we can start building the real examples.
-We will proceed here with building the first simple example. Note that the procedure to follow for all the other examples is identical.
+we can start building the real examples.
+We will proceed here with building the first simple example.  
+Note that the procedure to follow for all the other examples is identical.
 
 First let's create a build directory and jump to it.
 ```
-cd examples/ex_01a_simple_tx
-```
-```
-mkdir build
-```
-```
-cd build
+    cd examples/ex_01a_simple_tx
 ```
 We configure the build system with Ninja as follows:
 ```
-cmake -GNinja -DBOARD=nrf52_dwm1001 ..
+    cmake -B build -DBOARD=nrf52_dwm1001 .
 ```
+If you are developing on on a Linux or OSX system, then you may use the script `update.sh`, which does the same operation.
+
 And we actually build or firmware with ninja:
 ```
-ninja
+    cd build
+    make
 ```
 
 ### Flash
