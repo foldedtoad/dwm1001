@@ -126,7 +126,7 @@ make flash
 ```
 
 ### Console Messages (JLink RTT Console)
-If you are developing on a Linux or OSX system and have installled the JLink package, then you can use the `rtt.sh` script to start console instance.  Something like the `rtt.sh` script may be possible on Windows, but it has not be tried.
+If you are developing on a Linux or OSX system and have installled the JLink package, then you can use the `rtt.sh` script (in the root directory) to start console instance.  Something like the `rtt.sh` script may be possible on Windows, but it has not be tried.  Be sure to follow the directions displayed when `rtt.sh` starts: `h`, `r`, `g` in the JLinkExe shell.
 
 If you have RTT message support and started, then you should see the following
 
