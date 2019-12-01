@@ -81,7 +81,7 @@ If you are developing a new project or modifying an existig project, the you wil
 ### Zephyr Environment Variables
 Now change your active directory:
 ```
-cd zephyr
+    cd zephyr
 ```
 
 Now source the script zephyr-env.sh (linux & macOS) or run zephyr-env.cmd to make sure all the environment variables are set correctly.
@@ -90,19 +90,18 @@ Now source the script zephyr-env.sh (linux & macOS) or run zephyr-env.cmd to mak
 The github repository is the one that contains the specific DWM1001 example code.
 Download or clone [this](https://github.com/foldedtoad/dwm1001) repository to your local computer:
 ```
-git clone https://github.com/foldedtoad/dwm1001.git
+    git clone https://github.com/foldedtoad/dwm1001.git
 ```
 NOTE: The original code can be found [here](https://github.com/RT-LOC/zephyr-dwm1001)
 
-we can start building the real examples.
-We will proceed here with building the first simple example.  
-Note that the procedure to follow for all the other examples is identical.
+Start building the real examples from the project.  
+NOTE: The procedure is identical for all examples.  
 
-First let's create a build directory and jump to it.
+We will proceed with building the first simple example: `./examples/ex_01a_simple_tx/`.
 ```
     cd examples/ex_01a_simple_tx
 ```
-We configure the build system with `cmake` as follows:
+Configure the build system with `cmake` as follows:
 ```
     cmake -B build -DBOARD=nrf52_dwm1001 .
 ```
@@ -191,4 +190,3 @@ The following examples are provided (checkbox checked if all functionality of th
 * (Mobile) readout app (alternative: use Nordic `nrf-connect` app (iOS and Android)
 * Add DTS/Bindings structure to allow non-Zephyr-included drivers to be accessed from custom app
 * Create a VirtualBox VM image which contains a turn-key Zephyr + DWM1001 development system.
-
