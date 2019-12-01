@@ -21,7 +21,7 @@
 
 #define DWM1001_UUID_SERVICE            0x00,0x00
 #define DWM1001_UUID_NOTIFY             0x01,0x00
-#define DWM1001_UUID_COMMAND            0x01,0x00
+#define DWM1001_UUID_COMMAND            0x02,0x00
 
 /*
  *  DWM1001 Service UUID: aa9fa4b1-a1ee-457a-af5b-59a821630000
