@@ -104,7 +104,9 @@ We configure the build system with `cmake` as follows:
 ```
     cmake -B build -DBOARD=nrf52_dwm1001 .
 ```
-NOTE: You will need to re-do the above step whenever new "C" type files are added to your project.  The Zephyr cmake support is good a detecting change in existing files, but doesn't detect newly added files, thus the need to run the above again.
+NOTE: You will need to re-do the above step whenever new "C"-type files are added to your project.  The Zephyr cmake support is good at detecting changes in existing files, but doesn't detect newly added files; thus the need to run the above again.
+
+NOTE: Sometimes you might get error messages from the above configuration procedure. If so, delete the whole build directory and try again; often there are residual files in an existing build directory which appear to collide with the new configuration definitions. 
 
 OPTIONAL: If you are developing on a Linux or OSX system, then you may use the script `update.sh`, which does the same operation.
 
@@ -122,6 +124,19 @@ Make sure you have nrfjprog properly installed and that it is in the system PATH
 ```
 make flash
 ```
+
+### Console Messages (JLink RTT Console)
+If you are developing on a Linux or OSX system and have installled the JLink package, then you can use the `rtt.sh` script to start console instance.  Something like the `rtt.sh` script may be possible on Windows, but it has not be tried.
+
+If you have RTT message support and started, then you should see the following
+
+```
+***** Booting Zephyr OS build zehpher-V2.0.0-882-g89a984e64424 *****
+main_thread
+SIMPLE TX 13
+device_id: deca0130
+```
+
 
 ## Examples
 The following examples are provided (checkbox checked if all functionality of the example is fully functional):
