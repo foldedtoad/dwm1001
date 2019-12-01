@@ -104,9 +104,11 @@ We configure the build system with `cmake` as follows:
 ```
     cmake -B build -DBOARD=nrf52_dwm1001 .
 ```
-If you are developing on a Linux or OSX system, then you may use the script `update.sh`, which does the same operation.
+NOTE: You will need to re-do the above step whenever new "C" type files are added to your project.  The Zephyr cmake support is good a detecting change in existing files, but doesn't detect newly added files, thus the need to run the above again.
 
-And we actually build or firmware with ninja:
+OPTIONAL: If you are developing on a Linux or OSX system, then you may use the script `update.sh`, which does the same operation.
+
+And we actually build or firmware with `make`:
 ```
     cd build
     make
