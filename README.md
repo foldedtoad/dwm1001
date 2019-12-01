@@ -12,9 +12,9 @@ The major changes from the original Decawave project are:
 * Change hardware-related reference to Device Tree Symbolics (DTS). Some DTS symbols were already being used, but there were a few cases which needed to be converted.
 
 * The Bluetooth example has been completely replaced with a new example. The original BLE support used what appeared to be a BLE-SIG defined UUID, named `dps`, a 16-bit UUID, which is no longer available in Zephyr.
-This example used a custom 128-bit UUID for both the DWM1001 service and characteristics. This serves as a better starting-point example, as most developers will interested in custom BLE services/charactersistics. Please use the Nordic mobile utility "nrf-connect" to interact with this new version, or (better) write a mobile app.
+This example uses a custom 128-bit UUID for both the DWM1001 service and characteristics. This serves as a better starting-point example, as most developers will interested in custom BLE services/charactersistics. 
 
-* The original code had comment lines which extended well past 80 columns.  This is very inconvienent for development within VMs on laptops. So the code has been reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
+* The original code had comment lines which extended well past 80 columns.  This is very inconvienent for development within VMs on laptops where screen real-estate limited. So the code was reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
 
 ## Getting Started
 
@@ -25,12 +25,12 @@ Linux, Mac or Windows
 This project was developed in a VirtualBox VM running Ubuntu 18.04 (LTS), but there is no reason these changes should work with the other OSes.
 
 ### Hardware
-You will need at least one `DWM1001-dev` board and a `micro-USB` cable. 
-Many of the examples will require two boards or more boards, such as the micro-location examples.
+You will need at least one `DWM1001-dev` board and a `micro-USB` cable.  
+Many of the examples will require two boards or more, such as the micro-location examples.
 
 NOTE: Because the DWM1001 board incorporates a Segger JLink debugger (on-board), it is highly recommended to install the Segger JLink package on your development system: it's free, and provides support for gdb, pyocd, and Ozone (Segger's debugger).
 
-Because this board incorporates JLink support, extensive use of Segger's RTT console support is used for logging.  This eliminates the need to configure and run a seperated UART-based console when developing.
+Because this board incorporates JLink support, Segger's RTT console support is used for logging.  This eliminates the need to configure and run a seperated UART-based console when developing.
 
 ### Board Support (new)
 A major feature of this project is the defining of the DWM1001 board as part of this project. The original project from which this project was cloned, required the use of a special version of the Zephyr project which had the DWM1001 board definitions inserted into the base Zephyr project. Later versions of Zephyr now have a method for defining custom boards within a project, eliminating the need to modify (and maintain) Zephyr itself.
@@ -50,7 +50,7 @@ boards/
         ├── nrf52_dwm1001.dts
         └── nrf52_dwm1001.yaml
 ```
-In each example sub-project, the CMakeList.txt file has been updated with the following statement. This merges this custom board definition into the Zephyr board configuration process. 
+In each example sub-project, the CMakeList.txt file has been updated with the following statement. This statement merges the custom board definition into the Zephyr board configuration process. 
 
 ```
  set(BOARD_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../..")
@@ -190,3 +190,5 @@ The following examples are provided (checkbox checked if all functionality of th
 * Examples completion
 * (Mobile) readout app (alternative: use Nordic `nrf-connect` app (iOS and Android)
 * Add DTS/Bindings structure to allow non-Zephyr-included drivers to be accessed from custom app
+* Create a VirtualBox VM image which contains a turn-key Zephyr + DWM1001 development system.
+
