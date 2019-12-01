@@ -100,11 +100,11 @@ First let's create a build directory and jump to it.
 ```
     cd examples/ex_01a_simple_tx
 ```
-We configure the build system with Ninja as follows:
+We configure the build system with `cmake` as follows:
 ```
     cmake -B build -DBOARD=nrf52_dwm1001 .
 ```
-If you are developing on on a Linux or OSX system, then you may use the script `update.sh`, which does the same operation.
+If you are developing on a Linux or OSX system, then you may use the script `update.sh`, which does the same operation.
 
 And we actually build or firmware with ninja:
 ```
@@ -113,21 +113,12 @@ And we actually build or firmware with ninja:
 ```
 
 ### Flash
-Now let's flash the binary file that we just built onto the board. Make sure you have nrfjprog properly installed and that it is in the system PATH.
-
-#### Erase the flash:
-```
-nrfjprog --family nrf52 --eraseall
-```
+Now let's flash the binary file that we just built onto the board. 
+Make sure you have nrfjprog properly installed and that it is in the system PATH.
 
 #### Program the binary file on the board:
 ```
-nrfjprog --family nrf52 --program zephyr/zephyr.hex
-```
-
-#### Perform a soft reset of the MCU:
-```
-nrfjprog --family nrf52 --reset
+make flash
 ```
 
 ## Examples
@@ -178,4 +169,5 @@ The following examples are provided (checkbox checked if all functionality of th
 
 ## What's next?
 * Examples completion
-* (Mobile) readout app
+* (Mobile) readout app (alternative: use Nordic `nrf-connect` app (iOS and Android)
+* Add DTS/Bindings structure to allow non-Zephyr-included drivers to be accessed from custom app
