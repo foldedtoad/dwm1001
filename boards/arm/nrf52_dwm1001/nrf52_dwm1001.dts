@@ -81,14 +81,24 @@
 	rx-pin = <11>;
 };
 
-&spi0 {
-	/* Cannot be used together with i2c0. */
-	/* status = "okay"; */
-	//TODO
+&i2c0 {
+	compatible = "nordic,nrf-twi";
+	status = "okay";
+	clock-frequency = <I2C_BITRATE_FAST>;
+	sda-pin = <29>;
+	scl-pin = <28>;
+
+	/* embedded LIS2DH accelerometer  */
+	lis2dh@19 {
+		compatible = "st,lis2dh";
+		reg = <0x19>;
+		irq-gpios = <&gpio0 25 0>;
+		label = "LIS2DH";
+	};
 };
 
 &spi1 {
-	compatible = "nordic,nrf-spi";  // was "nordic,nrf-spim"
+	compatible = "nordic,nrf-spi";
 	status = "okay";
 	sck-pin  = <16>;
 	mosi-pin = <20>;
