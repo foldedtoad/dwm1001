@@ -184,6 +184,8 @@ The following examples are provided (checkbox checked if all functionality of th
   - [ ] ex_11b_leds
  - Example 12 - BLE
   - [ ] ex_12a_ble 
+ - Example 13 - BLE
+  - [ ] ex_13a_accelerometer  
 
 ## What's next?
 * Examples completion
