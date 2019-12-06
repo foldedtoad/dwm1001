@@ -53,3 +53,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 build
+
+# private development
+work/
