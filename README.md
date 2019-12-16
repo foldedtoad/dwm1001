@@ -109,7 +109,7 @@ NOTE: You will need to re-do the above step whenever new "C"-type files are adde
 
 NOTE: Sometimes you might get error messages from the above configuration procedure. If so, delete the whole build directory and try again; often there are residual files in an existing build directory which appear to collide with the new configuration definitions. 
 
-OPTIONAL: If you are developing on a Linux or OSX system, then you may use the script `update.sh`, which does the same operation.
+OPTIONAL: If you are developing on a Linux or OSX system, then you may use the script `configure.sh`, which does the same operation.
 
 And we actually build or firmware with `make`:
 ```
