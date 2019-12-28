@@ -1,5 +1,5 @@
 /*
- *  i2c_slave.h
+ *  i2c_master.h
  */
 #ifndef __SPI_MASTER_H__
 #define __SPI_MASTER_H__
