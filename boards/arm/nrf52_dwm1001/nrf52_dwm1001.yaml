@@ -10,6 +10,6 @@ ram: 64
 flash: 512
 supported:
   - spi
-  - todo
+  - i2c
 
 #include: nordic,nrf-spi-common.yaml

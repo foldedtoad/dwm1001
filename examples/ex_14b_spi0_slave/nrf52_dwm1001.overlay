@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2019 Callender-Consulting, LLC
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+&spi0 {
+	compatible = "nordic,nrf-spis";
+	status = "okay";
+	mosi-pin = <12>;		// M6	(3)
+	miso-pin = <27>;		// M13	(4)
+	sck-pin  = <23>;		// M16	(7)
+	csn-pin  = <13>;		// M17	(8)
+	def-char = <0xFF>;
+};
