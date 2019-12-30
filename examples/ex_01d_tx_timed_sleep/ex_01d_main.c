@@ -18,9 +18,9 @@
 #include "deca_spi.h"
 #include "port.h"
 
-//zephyr includes
+// zephyr includes
 #include <zephyr.h>
-#include <misc/printk.h>
+#include <sys/printk.h>
 
 #define LOG_LEVEL 3
 #include <logging/log.h>

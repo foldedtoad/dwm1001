@@ -41,9 +41,9 @@
  * @author Decawave, RTLOC
  */
 
-//zephyr includes
+// zephyr includes
 #include <zephyr.h>
-#include <misc/printk.h>
+#include <sys/printk.h>
 
 #include <stdio.h>
 #include <string.h>

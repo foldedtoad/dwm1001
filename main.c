@@ -18,7 +18,7 @@
  * 
  */
 #include <zephyr.h>
-#include <misc/printk.h>
+#include <sys/printk.h>
 
 #define STACKSIZE 1024
 #define PRIORITY 99

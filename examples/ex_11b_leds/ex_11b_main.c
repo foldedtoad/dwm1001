@@ -9,9 +9,9 @@
  */
 #include <zephyr.h>
 #include <drivers/gpio.h>
-#include <misc/printk.h>
+#include <sys/printk.h>
 #include <gpio.h>
-#include <misc/util.h>
+#include <sys/util.h>
 
 #include "port.h"
 

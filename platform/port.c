@@ -17,19 +17,16 @@
 #include "deca_device_api.h"
 #include "deca_spi.h"
 
-//zephyr includes
+// zephyr includes
 #include <errno.h>
 #include <zephyr.h>
-#include <misc/printk.h>
+#include <sys/printk.h>
 #include <device.h>
 #include <soc.h>
 #include <hal/nrf_gpiote.h>
 #include <gpio.h>
-#include <kernel_internal.h>
-#include <arch/arm/cortex_m/cmsis.h>
-#include <cortex_m/stack.h>
 
-struct device *gpio_dev;
+struct device * gpio_dev;
 static struct gpio_callback gpio_cb;
 
 #define PIN     19 /* DW Irq pin */

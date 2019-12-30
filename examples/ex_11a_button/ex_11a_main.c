@@ -8,7 +8,7 @@
  */
 #include <zephyr.h>
 #include <drivers/gpio.h>
-#include <misc/printk.h>
+#include <sys/printk.h>
 
 #define LOG_LEVEL 3
 #include <logging/log.h>

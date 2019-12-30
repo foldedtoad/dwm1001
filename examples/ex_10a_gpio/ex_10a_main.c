@@ -25,7 +25,7 @@
 
 #include <zephyr.h>
 #include <drivers/gpio.h>
-#include <misc/printk.h>
+#include <sys/printk.h>
 
 #include "deca_device_api.h"
 #include "deca_spi.h"

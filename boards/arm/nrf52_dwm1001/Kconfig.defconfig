@@ -34,7 +34,7 @@ endif # PWM
 if SPI
 
 config SPI_0
-	default y
+	default n
 
 config SPI_1
 	default y
