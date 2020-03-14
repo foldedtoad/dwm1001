@@ -23,24 +23,24 @@ LOG_MODULE_REGISTER(main);
 /* 
  * See ./build/zephyr/include/generated/generated_dts_board.conf for details
  */
-#define BUTTON_GPIO_CONTROLLER_NAME		DT_ALIAS_SW0_GPIOS_CONTROLLER
-#define BUTTON_0_PIN					DT_GPIO_KEYS_BUTTON_0_GPIOS_PIN
+#define BUTTON_GPIO_CONTROLLER_NAME     DT_ALIAS_SW0_GPIOS_CONTROLLER
+#define BUTTON_0_PIN                    DT_GPIO_KEYS_BUTTON_0_GPIOS_PIN
 
 static struct gpio_callback gpio_cb;
 static struct device * gpiob;
 
 /* Button event callback */
 static void button_event(struct device * gpiob, 
-	                     struct gpio_callback * cb, 
-	                     u32_t pins)
+                         struct gpio_callback * cb, 
+                         u32_t pins)
 {
-	int button_state;
+    int button_state;
 
-	gpio_pin_read(gpiob, BUTTON_0_PIN, &button_state);
+    button_state = gpio_pin_get(gpiob, BUTTON_0_PIN);
 
-	printk("Button %s cycle count %u\n", 
-		   button_state ?  "released:" : "pressed: ", 
-		   k_cycle_get_32());
+    printk("Button %s cycle count %u\n", 
+           button_state ?  "released:" : "pressed: ", 
+           k_cycle_get_32());
 }
 
 /**
@@ -53,27 +53,28 @@ int dw_main(void)
     printk(APP_NAME);
     printk(APP_VERSION);
     printk(APP_LINE);
-	
-	/* Get GPIO device binding */
-	gpiob = device_get_binding(BUTTON_GPIO_CONTROLLER_NAME);
-	if (!gpiob) {
-		printk("error\n");
-		return -1;
-	}
+    
+    /* Get GPIO device binding */
+    gpiob = device_get_binding(BUTTON_GPIO_CONTROLLER_NAME);
+    if (!gpiob) {
+        printk("error\n");
+        return -1;
+    }
 
-	/* Init Button Interrupt */
-	gpio_pin_configure(gpiob, BUTTON_0_PIN,
-			            GPIO_DIR_IN | 
-			            GPIO_INT |  
-			            GPIO_PUD_PULL_UP | 
-			            GPIO_INT_EDGE | 
-			            GPIO_INT_DOUBLE_EDGE );
+    /* Init Button Interrupt */
+    int flags = (GPIO_INPUT      | 
+                 GPIO_ACTIVE_LOW |  
+                 GPIO_PULL_UP    | 
+                 GPIO_INT_EDGE   | 
+                 GPIO_INT_EDGE_BOTH);
 
-	gpio_init_callback(&gpio_cb, button_event, BIT(BUTTON_0_PIN));
+    gpio_pin_configure(gpiob, BUTTON_0_PIN, flags);
 
-	gpio_add_callback(gpiob, &gpio_cb);
+    gpio_pin_interrupt_configure(gpiob, BUTTON_0_PIN, GPIO_INT_EDGE_TO_ACTIVE);
 
-	gpio_pin_enable_callback(gpiob, BUTTON_0_PIN);
+    gpio_init_callback(&gpio_cb, button_event, BIT(BUTTON_0_PIN));
 
-	return 0;
+    gpio_add_callback(gpiob, &gpio_cb);
+
+    return 0;
 }

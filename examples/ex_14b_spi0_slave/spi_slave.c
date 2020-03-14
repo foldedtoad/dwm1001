@@ -15,7 +15,7 @@
 #include <zephyr.h>
 #include <sys/printk.h>
 #include <device.h>
-#include <spi.h>
+#include <drivers/spi.h>
 
 #include "spi_slave.h"
 

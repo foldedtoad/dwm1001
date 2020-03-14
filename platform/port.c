@@ -24,7 +24,7 @@
 #include <device.h>
 #include <soc.h>
 #include <hal/nrf_gpiote.h>
-#include <gpio.h>
+#include <drivers/gpio.h>
 
 struct device * gpio_dev;
 static struct gpio_callback gpio_cb;
@@ -310,7 +310,7 @@ uint32_t port_CheckEXT_IRQ(void)
 /* DW1000 IRQ handler definition. */
 // static port_deca_isr_t port_deca_isr = NULL;
 
-/*! ------------------------------------------------------------------------------------------------------------------
+/*! ---------------------------------------------------------------------------
  * @fn port_set_deca_isr()
  *
  * @brief This function is used to install the handling function for DW1000 IRQ.
@@ -323,20 +323,21 @@ uint32_t port_CheckEXT_IRQ(void)
  */
 void port_set_deca_isr(port_deca_isr_t deca_isr)
 {
-	gpio_dev = device_get_binding(DT_GPIO_P0_DEV_NAME);
-	if (!gpio_dev) {
-		printk("error\n");
-		return;
-	}
+    gpio_dev = device_get_binding(DT_GPIO_P0_DEV_NAME);
+    if (!gpio_dev) {
+        printk("error\n");
+        return;
+    }
 
-	/* Decawave interrupt */
-	gpio_pin_configure(gpio_dev, PIN,
-			   GPIO_DIR_IN | GPIO_INT |  GPIO_PUD_PULL_UP | GPIO_INT_EDGE | GPIO_INT_ACTIVE_HIGH );
-	gpio_init_callback(&gpio_cb, (gpio_callback_handler_t)(deca_isr), BIT(PIN));
-	gpio_add_callback(gpio_dev, &gpio_cb);
-	gpio_pin_enable_callback(gpio_dev, PIN);
+    /* Decawave interrupt */
+    gpio_pin_configure(gpio_dev, PIN, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP));
+
+    gpio_pin_interrupt_configure(gpio_dev, PIN, GPIO_INT_EDGE_TO_ACTIVE);
+
+    gpio_init_callback(&gpio_cb, (gpio_callback_handler_t)(deca_isr), BIT(PIN));
+
+    gpio_add_callback(gpio_dev, &gpio_cb);
 }
-
 
 /****************************************************************************//**
  *

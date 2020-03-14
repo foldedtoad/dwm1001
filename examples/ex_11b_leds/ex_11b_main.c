@@ -10,7 +10,7 @@
 #include <zephyr.h>
 #include <drivers/gpio.h>
 #include <sys/printk.h>
-#include <gpio.h>
+#include <drivers/gpio.h>
 #include <sys/util.h>
 
 #include "port.h"
@@ -39,41 +39,41 @@ struct device * gpiob;
 
 void led_red1_off(void)
 {
-    gpio_pin_write(gpiob, GPIO_OUT_PIN_RED, 1);
+    gpio_pin_set(gpiob, GPIO_OUT_PIN_RED, 1);
 }
 void led_green_off(void)
 {
-    gpio_pin_write(gpiob, GPIO_OUT_PIN_GREEN, 1);
+    gpio_pin_set(gpiob, GPIO_OUT_PIN_GREEN, 1);
 }
 
 void led_blue_off(void)
 {
-    gpio_pin_write(gpiob, GPIO_OUT_PIN_BLUE, 1);
+    gpio_pin_set(gpiob, GPIO_OUT_PIN_BLUE, 1);
 }
 
 void led_red2_off(void)
 {
-    gpio_pin_write(gpiob, GPIO_OUT_PIN_RED2, 1);
+    gpio_pin_set(gpiob, GPIO_OUT_PIN_RED2, 1);
 }
 
 void led_red1_on(void)
 {
-    gpio_pin_write(gpiob, GPIO_OUT_PIN_RED, 0);
+    gpio_pin_set(gpiob, GPIO_OUT_PIN_RED, 0);
 }
 
 void led_green_on(void)
 {
-    gpio_pin_write(gpiob, GPIO_OUT_PIN_GREEN, 0);
+    gpio_pin_set(gpiob, GPIO_OUT_PIN_GREEN, 0);
 }
 
 void led_blue_on(void)
 {
-    gpio_pin_write(gpiob, GPIO_OUT_PIN_BLUE, 0);
+    gpio_pin_set(gpiob, GPIO_OUT_PIN_BLUE, 0);
 }
 
 void led_red2_on(void)
 {
-    gpio_pin_write(gpiob, GPIO_OUT_PIN_RED2, 0);
+    gpio_pin_set(gpiob, GPIO_OUT_PIN_RED2, 0);
 }
 
 /**
@@ -97,22 +97,22 @@ int dw_main(void)
     }
 
     /* Setup GPIO output */
-    ret = gpio_pin_configure(gpiob, GPIO_OUT_PIN_RED, (GPIO_DIR_OUT));
+    ret = gpio_pin_configure(gpiob, GPIO_OUT_PIN_RED, (GPIO_OUTPUT));
     if (ret) {
         printk("Error configuring " GPIO_DRV_NAME "%d!\n", GPIO_OUT_PIN_RED);
     }
 
-    ret = gpio_pin_configure(gpiob, GPIO_OUT_PIN_GREEN, (GPIO_DIR_OUT));
+    ret = gpio_pin_configure(gpiob, GPIO_OUT_PIN_GREEN, (GPIO_OUTPUT));
     if (ret) {
         printk("Error configuring " GPIO_DRV_NAME "%d!\n", GPIO_OUT_PIN_GREEN);
     }
 
-    ret = gpio_pin_configure(gpiob, GPIO_OUT_PIN_BLUE, (GPIO_DIR_OUT));
+    ret = gpio_pin_configure(gpiob, GPIO_OUT_PIN_BLUE, (GPIO_OUTPUT));
     if (ret) {
         printk("Error configuring " GPIO_DRV_NAME "%d!\n", GPIO_OUT_PIN_BLUE);
     }
 
-    ret = gpio_pin_configure(gpiob, GPIO_OUT_PIN_RED2, (GPIO_DIR_OUT));
+    ret = gpio_pin_configure(gpiob, GPIO_OUT_PIN_RED2, (GPIO_OUTPUT));
     if (ret) {
         printk("Error configuring " GPIO_DRV_NAME "%d!\n", GPIO_OUT_PIN_RED2);
     }
