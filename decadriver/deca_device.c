@@ -194,7 +194,7 @@ int dwt_initialise(int config)
 #endif
 
     // Read and validate device ID, return -1 if not recognised
-    u32_t device_id = dwt_readdevid();
+    uint32_t device_id = dwt_readdevid();
     if (DWT_DEVICE_ID != device_id) // MP IC ONLY (i.e. DW1000) FOR THIS CODE
     {
         return DWT_ERROR ;

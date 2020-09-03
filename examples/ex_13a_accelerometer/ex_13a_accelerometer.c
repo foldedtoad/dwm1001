@@ -22,10 +22,10 @@ LOG_MODULE_REGISTER(accel);
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-static s32_t read_sensor(struct device * sensor, 
-                         enum sensor_channel channel)
+static int32_t read_sensor(struct device * sensor, 
+                           enum sensor_channel channel)
 {
-    s32_t ret = 0;
+    int32_t ret = 0;
 
     struct sensor_value val[3];
 
@@ -61,10 +61,10 @@ static s32_t read_sensor(struct device * sensor,
 /*---------------------------------------------------------------------------*/
 void accel_init(void)
 {
-    struct device * accelerometer = device_get_binding(DT_INST_0_ST_LIS2DH_LABEL);
+    struct device * accelerometer = device_get_binding(DT_LABEL(DT_INST(0, st_lis2dh)));
 
     if (accelerometer == NULL) {
-        LOG_ERR("Could not get %s device", DT_INST_0_ST_LIS2DH_LABEL);
+        LOG_ERR("Could not get %s device", DT_LABEL(DT_INST(0, st_lis2dh)));
         return;
     }
 
@@ -75,7 +75,7 @@ void accel_init(void)
             LOG_INF("Failed to read accelerometer data");
         }
 
-        k_sleep(1000);
+        k_sleep(K_MSEC(1000));
     }
 }
 
@@ -86,7 +86,7 @@ int dw_main(void)
 {
     /*  Just spin in a sleepy loop */
     while (1) {
-        k_sleep(1000);
+        k_sleep(K_MSEC(1000));
     }
     return 0;
 }

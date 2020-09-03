@@ -21,7 +21,7 @@ LOG_MODULE_REGISTER(ble_device);
 /*---------------------------------------------------------------------------*/
 typedef struct ble_msg {
     ble_event_t event;
-    u8_t        data;
+    uint8_t     data;
 } ble_msg_t;
 
 #define QUEUE_ELEMENTS       8
@@ -49,7 +49,7 @@ static struct k_work disconnect_work;
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-int ble_command(u8_t command)
+int ble_command(uint8_t command)
 {
     int status = 0;
 
@@ -85,7 +85,7 @@ void ble_device_tasks(void)
 {
     while (active) {
 
-        k_sleep(MSEC_PER_SEC);
+        k_sleep(K_MSEC(MSEC_PER_SEC));
 
         if (is_connected()) {
             /* Battery level (simulation) */
@@ -97,7 +97,7 @@ void ble_device_tasks(void)
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-int ble_enqueue_msg(ble_event_t event, u32_t data)
+int ble_enqueue_msg(ble_event_t event, uint32_t data)
 {
     ble_msg_t msg;
 
@@ -143,7 +143,7 @@ static void ble_queue_service(void)
 /*---------------------------------------------------------------------------*/
 void ble_device_name(void)
 {
-    u32_t deviceid = NRF_FICR->DEVICEID[0];
+    uint32_t deviceid = NRF_FICR->DEVICEID[0];
 
     sprintf(DeviceId, "%s_%08x", CONFIG_BT_DEVICE_NAME, deviceid);
 

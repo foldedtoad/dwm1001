@@ -14,3 +14,5 @@ target_sources(app PRIVATE ../../platform/port.c)
 target_include_directories(app PRIVATE ../../decadriver/)
 target_include_directories(app PRIVATE ../../platform/)
 target_include_directories(app PRIVATE ../../compiler/)
+
+# zephyr_compile_options(-save-temps)

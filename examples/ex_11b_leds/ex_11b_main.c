@@ -28,12 +28,12 @@ LOG_MODULE_REGISTER(main);
 /* 
  * See ./build/zephyr/include/generated/generated_dts_board.conf for details
  */
-#define GPIO_DRV_NAME       DT_INST_0_NORDIC_NRF_GPIO_LABEL
+#define GPIO_DRV_NAME       DT_LABEL(DT_NODELABEL(gpio0))
 
-#define GPIO_OUT_PIN_RED    DT_ALIAS_LED0_GPIOS_PIN
-#define GPIO_OUT_PIN_GREEN  DT_ALIAS_LED1_GPIOS_PIN
-#define GPIO_OUT_PIN_RED2   DT_ALIAS_LED2_GPIOS_PIN
-#define GPIO_OUT_PIN_BLUE   DT_ALIAS_LED3_GPIOS_PIN
+#define GPIO_OUT_PIN_RED    DT_GPIO_PIN(DT_ALIAS(led0), gpios)
+#define GPIO_OUT_PIN_GREEN  DT_GPIO_PIN(DT_ALIAS(led1), gpios)
+#define GPIO_OUT_PIN_RED2   DT_GPIO_PIN(DT_ALIAS(led2), gpios)
+#define GPIO_OUT_PIN_BLUE   DT_GPIO_PIN(DT_ALIAS(led3), gpios)
 
 struct device * gpiob;
 

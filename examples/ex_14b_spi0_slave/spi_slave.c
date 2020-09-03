@@ -24,7 +24,7 @@
 /*---------------------------------------------------------------------------*/
 int spi_slave_write(struct device * spi, 
                     struct spi_config * spi_cfg,
-                    u16_t * data)
+                    uint16_t * data)
 {
     struct spi_buf bufs = {
             .buf = data,
@@ -44,7 +44,7 @@ int spi_slave_write(struct device * spi,
 /*---------------------------------------------------------------------------*/
 int spi_slave_read(struct device * spi, 
                    struct spi_config * spi_cfg,
-                   u16_t * data)
+                   uint16_t * data)
 {
     struct spi_buf bufs = {
             .buf = data,
@@ -67,14 +67,14 @@ void spi_slave_init(void)
     struct device * spi;
     struct spi_config spi_cfg;
 
-    u16_t tx_data = 0x5678;
-    u16_t rx_data = 0;
+    uint16_t tx_data = 0x5678;
+    uint16_t rx_data = 0;
 
     printk("SPI Slave example application\n");
 
     printk("rx_data buffer at %p\n", &rx_data);
 
-    spi = device_get_binding(DT_INST_0_NORDIC_NRF_SPIS_LABEL);
+    spi = device_get_binding(DT_LABEL(DT_NODELABEL(spi0)));
     if (!spi) {
         printk("Could not find SPI driver\n");
         return;
@@ -108,8 +108,10 @@ void spi_slave_init(void)
     spi_cfg.operation = SPI_WORD_SET(8) | SPI_OP_MODE_SLAVE;
     spi_cfg.frequency = 1000000;
 
-    printk("%s: slave config @ %p:"
-            " wordsize(%u), mode(%u/%u/%u)\n", __func__, &spi_cfg,
+    printk("%s: %s slave config @ %p:"
+            " wordsize(%u), mode(%u/%u/%u)\n", __func__, 
+            DT_LABEL(DT_NODELABEL(spi0)),
+            &spi_cfg,
             SPI_WORD_SIZE_GET(spi_cfg.operation),
             (SPI_MODE_GET(spi_cfg.operation) & SPI_MODE_CPOL) ? 1 : 0,
             (SPI_MODE_GET(spi_cfg.operation) & SPI_MODE_CPHA) ? 1 : 0,
@@ -118,10 +120,10 @@ void spi_slave_init(void)
     printk("%s: SPI pin config -- "
            "MOSI(P0.%d), MISO(P0.%d), SCK(P0.%d), CS(P0.%d)\n",
            __func__,
-           DT_ALIAS_SPI_0_MOSI_PIN,
-           DT_ALIAS_SPI_0_MISO_PIN,
-           DT_ALIAS_SPI_0_SCK_PIN,
-           DT_ALIAS_SPI_0_CSN_PIN);
+           DT_PROP(DT_NODELABEL(spi0), mosi_pin),
+           DT_PROP(DT_NODELABEL(spi0), miso_pin),
+           DT_PROP(DT_NODELABEL(spi0), sck_pin),
+           DT_PROP(DT_NODELABEL(spi0), csn_pin));
 
     while (1) {
         spi_slave_read(spi, &spi_cfg, &rx_data);

@@ -26,10 +26,8 @@
 #include <hal/nrf_gpiote.h>
 #include <drivers/gpio.h>
 
-struct device * gpio_dev;
+static struct device * gpio_dev;
 static struct gpio_callback gpio_cb;
-
-#define PIN     19 /* DW Irq pin */
 
 /****************************************************************************//**
  *
@@ -89,7 +87,7 @@ int usleep(unsigned long usec)
  * */
 void Sleep(uint32_t x)
 {
-    k_sleep(x);
+    k_sleep(K_MSEC(x));  // FIXME review this change for Zephyr 2.3.99
 }
 
 /****************************************************************************//**
@@ -308,7 +306,10 @@ uint32_t port_CheckEXT_IRQ(void)
  *******************************************************************************/
 
 /* DW1000 IRQ handler definition. */
-// static port_deca_isr_t port_deca_isr = NULL;
+
+// FIXME this needs to be specified with DT_ macros, but how???  FIXME
+#define GPIO_PIN     19
+#define GPIO_NAME    DT_LABEL(DT_NODELABEL(gpio0))
 
 /*! ---------------------------------------------------------------------------
  * @fn port_set_deca_isr()
@@ -323,18 +324,22 @@ uint32_t port_CheckEXT_IRQ(void)
  */
 void port_set_deca_isr(port_deca_isr_t deca_isr)
 {
-    gpio_dev = device_get_binding(DT_GPIO_P0_DEV_NAME);
+    gpio_dev = device_get_binding(GPIO_NAME);
     if (!gpio_dev) {
         printk("error\n");
         return;
     }
 
+    /* Init Button Interrupt */
+    int flags = (GPIO_INPUT      |
+                 GPIO_INT_EDGE   |
+                 GPIO_ACTIVE_LOW |  
+                 GPIO_PULL_UP);
+
     /* Decawave interrupt */
-    gpio_pin_configure(gpio_dev, PIN, (GPIO_INPUT | GPIO_ACTIVE_LOW | GPIO_PULL_UP));
+    gpio_pin_configure(gpio_dev, GPIO_PIN, flags);
 
-    gpio_pin_interrupt_configure(gpio_dev, PIN, GPIO_INT_EDGE_TO_ACTIVE);
-
-    gpio_init_callback(&gpio_cb, (gpio_callback_handler_t)(deca_isr), BIT(PIN));
+    gpio_init_callback(&gpio_cb, (gpio_callback_handler_t)(deca_isr), BIT(GPIO_PIN));
 
     gpio_add_callback(gpio_dev, &gpio_cb);
 }
@@ -342,4 +347,3 @@ void port_set_deca_isr(port_deca_isr_t deca_isr)
 /****************************************************************************//**
  *
  *******************************************************************************/
-

@@ -10,3 +10,5 @@ target_sources(app PRIVATE main.c)
 target_sources(app PRIVATE spi_master.c)
 
 target_include_directories(app PRIVATE ./)
+
+# zephyr_compile_options(-save-temps)

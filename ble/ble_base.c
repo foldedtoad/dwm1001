@@ -37,7 +37,7 @@ static const struct bt_data advert[] = {
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-static void connected_cb(struct bt_conn * conn, u8_t err)
+static void connected_cb(struct bt_conn * conn, uint8_t err)
 {
     if (err) {
         printk("Connection failed: err %u\n", err);
@@ -54,7 +54,7 @@ static void connected_cb(struct bt_conn * conn, u8_t err)
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-static void disconnected_cb(struct bt_conn * conn, u8_t reason)
+static void disconnected_cb(struct bt_conn * conn, uint8_t reason)
 {
     printk("Disconnected: reason %u\n", reason);
 
@@ -96,7 +96,7 @@ int ble_disconnect(void)
         
         default_conn = NULL;
         
-        k_sleep(50);  // wait for notifications to complete
+        k_sleep(K_MSEC(50));  // wait for notifications to complete
         
         bt_conn_disconnect(conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
     }
@@ -179,7 +179,7 @@ static struct bt_conn_auth_cb  auth_cb_display = {
 /*---------------------------------------------------------------------------*/
 void bas_notify(void)
 {
-    u8_t battery_level = bt_gatt_bas_get_battery_level();
+    uint8_t battery_level = bt_gatt_bas_get_battery_level();
 
     battery_level--;
 

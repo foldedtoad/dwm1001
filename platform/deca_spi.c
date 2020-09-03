@@ -61,8 +61,8 @@ static struct spi_cs_control cs_ctrl;
 int openspi(void)
 {
     /* Propagate CS config into all spi_cfgs[] elements */
-    cs_ctrl.gpio_dev = device_get_binding(DT_NORDIC_NRF_SPI_SPI_1_CS_GPIOS_CONTROLLER);
-    cs_ctrl.gpio_pin = DT_INST_0_NORDIC_NRF_SPI_CS_GPIOS_PIN;
+    cs_ctrl.gpio_dev = device_get_binding(DT_LABEL(DT_PHANDLE_BY_IDX(DT_NODELABEL(spi1), cs_gpios, 0)));
+    cs_ctrl.gpio_pin = DT_PHA(DT_NODELABEL(spi1), cs_gpios, pin);
     cs_ctrl.delay = 0U;
     for (int i=0; i < SPI_CFGS_COUNT; i++) {
         spi_cfgs[i].cs = &cs_ctrl;
@@ -70,7 +70,8 @@ int openspi(void)
 
     spi_cfg = &spi_cfgs[0];
 
-    spi = device_get_binding(DT_SPI_1_NAME);
+    spi = device_get_binding(DT_LABEL(DT_NODELABEL(spi1)));
+
     if (!spi) {
         printk("Could not find SPI driver\n");
         return -1;
