@@ -307,9 +307,8 @@ uint32_t port_CheckEXT_IRQ(void)
 
 /* DW1000 IRQ handler definition. */
 
-// FIXME this needs to be specified with DT_ macros, but how???  FIXME
-#define GPIO_PIN     19
-#define GPIO_NAME    DT_LABEL(DT_NODELABEL(gpio0))
+#define GPIO_NAME    DT_LABEL(DT_PHANDLE_BY_IDX(DT_NODELABEL(dwmirq), gpios, 0))
+#define GPIO_PIN     DT_PHA_BY_IDX(DT_NODELABEL(dwmirq), gpios, 0, pin)
 
 /*! ---------------------------------------------------------------------------
  * @fn port_set_deca_isr()

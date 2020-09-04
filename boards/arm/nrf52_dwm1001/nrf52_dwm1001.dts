@@ -57,7 +57,15 @@
 			gpios = <&gpio0 2 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
 			label = "Switch 0";
 		};
-	};	
+	};
+
+	radio {
+		compatible = "gpio-generic";
+		dwmirq: dwm_irq {
+			gpios = <&gpio0 19 0>;
+			label = "RADIO_IRQ";
+		};
+	};
 };
 
 &adc {
