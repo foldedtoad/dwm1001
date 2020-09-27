@@ -332,11 +332,13 @@ void port_set_deca_isr(port_deca_isr_t deca_isr)
     }
 
     /* Decawave interrupt */
-    gpio_pin_configure(gpio_dev, GPIO_PIN, GPIO_FLAGS);
+    gpio_pin_configure(gpio_dev, GPIO_PIN, (GPIO_INPUT | GPIO_FLAGS));
 
     gpio_init_callback(&gpio_cb, (gpio_callback_handler_t)(deca_isr), BIT(GPIO_PIN));
 
     gpio_add_callback(gpio_dev, &gpio_cb);
+
+    gpio_pin_interrupt_configure(gpio_dev, GPIO_PIN, GPIO_INT_EDGE_RISING);
 }
 
 /****************************************************************************//**
