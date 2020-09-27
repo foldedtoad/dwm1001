@@ -62,7 +62,7 @@
 	radio {
 		compatible = "gpio-generic";
 		dwmirq: dwm_irq {
-			gpios = <&gpio0 19 0>;
+			gpios = <&gpio0 19 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
 			label = "RADIO_IRQ";
 		};
 	};
@@ -110,7 +110,7 @@
 	sck-pin  = <16>;
 	mosi-pin = <20>;
 	miso-pin = <18>;
-	cs-gpios = <&gpio0 17 0>;
+	cs-gpios = <&gpio0 17 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
 };
 
 &flash0 {

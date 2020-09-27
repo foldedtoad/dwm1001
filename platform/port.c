@@ -87,7 +87,7 @@ int usleep(unsigned long usec)
  * */
 void Sleep(uint32_t x)
 {
-    k_sleep(K_MSEC(x));  // FIXME review this change for Zephyr 2.3.99
+    k_msleep(x);
 }
 
 /****************************************************************************//**
@@ -309,6 +309,7 @@ uint32_t port_CheckEXT_IRQ(void)
 
 #define GPIO_NAME    DT_LABEL(DT_PHANDLE_BY_IDX(DT_NODELABEL(dwmirq), gpios, 0))
 #define GPIO_PIN     DT_PHA_BY_IDX(DT_NODELABEL(dwmirq), gpios, 0, pin)
+#define GPIO_FLAGS   DT_PHA_BY_IDX(DT_NODELABEL(dwmirq), gpios, 0, flags)
 
 /*! ---------------------------------------------------------------------------
  * @fn port_set_deca_isr()
@@ -323,20 +324,15 @@ uint32_t port_CheckEXT_IRQ(void)
  */
 void port_set_deca_isr(port_deca_isr_t deca_isr)
 {
+    printk("%s: Binding to %s and pin %d\n", __func__, GPIO_NAME, GPIO_PIN);
     gpio_dev = device_get_binding(GPIO_NAME);
     if (!gpio_dev) {
         printk("error\n");
         return;
     }
 
-    /* Init Button Interrupt */
-    int flags = (GPIO_INPUT      |
-                 GPIO_INT_EDGE   |
-                 GPIO_ACTIVE_LOW |  
-                 GPIO_PULL_UP);
-
     /* Decawave interrupt */
-    gpio_pin_configure(gpio_dev, GPIO_PIN, flags);
+    gpio_pin_configure(gpio_dev, GPIO_PIN, GPIO_FLAGS);
 
     gpio_init_callback(&gpio_cb, (gpio_callback_handler_t)(deca_isr), BIT(GPIO_PIN));
 
