@@ -226,8 +226,7 @@ int dw_main(void)
         process_isr = 0;
 
         /* Wait for any RX event. */
-        while (tx_delay_ms == -1)
-        { /* spin */ };
+        while (tx_delay_ms == -1) { /* spin */ };
 
         printk("Test succeeded \n");
 

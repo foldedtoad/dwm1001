@@ -45,7 +45,7 @@ static const struct bt_gatt_cpf command_cpf = {
   .description = 0x0100,    // Front
 };
 
-static u8_t dwm1001_command[] = {
+static uint8_t dwm1001_command[] = {
     0x00,
 };
 
@@ -55,8 +55,8 @@ static u8_t dwm1001_command[] = {
 static ssize_t dwm1001_read_command(struct bt_conn * conn,
                                     const struct bt_gatt_attr * attr,
                                     void * buf,
-                                    u16_t len,
-                                    u16_t offset)
+                                    uint16_t len,
+                                    uint16_t offset)
 {
     const char * value = attr->user_data;
 
@@ -70,11 +70,11 @@ static ssize_t dwm1001_read_command(struct bt_conn * conn,
 static ssize_t  dwm1001_write_command(struct bt_conn * conn,
                                       const struct bt_gatt_attr *attr,
                                       const void * buf,
-                                      u16_t len,
-                                      u16_t offset,
-                                      u8_t flags)
+                                      uint16_t len,
+                                      uint16_t offset,
+                                      uint8_t flags)
 {
-    u8_t * data = attr->user_data;
+    uint8_t * data = attr->user_data;
 
     //LOG_INF("%s: %02x", __func__, *data);
 
@@ -83,7 +83,7 @@ static ssize_t  dwm1001_write_command(struct bt_conn * conn,
         return BT_GATT_ERR(BT_ATT_ERR_INVALID_ATTRIBUTE_LEN);
     }
 
-    ble_enqueue_msg(BLE_EVENT__COMMAND, *(u32_t*)buf);
+    ble_enqueue_msg(BLE_EVENT__COMMAND, *(uint32_t*)buf);
 
     if (flags & BT_GATT_WRITE_FLAG_PREPARE) {
         LOG_INF("%s: WRITE_FLAG_PREPARE", __func__);
@@ -103,7 +103,7 @@ static ssize_t  dwm1001_write_command(struct bt_conn * conn,
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-static void dwm1001_ccc_cfg_changed(const struct bt_gatt_attr * attr, u16_t value)
+static void dwm1001_ccc_cfg_changed(const struct bt_gatt_attr * attr, uint16_t value)
 {
   bool notif_enabled = (value == BT_GATT_CCC_NOTIFY);
 

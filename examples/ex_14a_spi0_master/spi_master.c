@@ -25,7 +25,7 @@
 /*---------------------------------------------------------------------------*/
 int spi_master_write(struct device * spi, 
                      struct spi_config * spi_cfg,
-                     u16_t * data)
+                     uint16_t * data)
 {
     static struct spi_buf bufs = {
             .buf = NULL,
@@ -49,7 +49,7 @@ int spi_master_write(struct device * spi,
 /*---------------------------------------------------------------------------*/
 int spi_master_read(struct device * spi, 
                     struct spi_config * spi_cfg,
-                    u16_t * data)
+                    uint16_t * data)
 {
     static struct spi_buf bufs = {
             .buf = NULL,
@@ -74,21 +74,21 @@ void spi_master_init(void)
     struct spi_config spi_cfg;
     struct spi_cs_control cs_ctrl;
 
-    u16_t tx_data = 0x1234;
-    u16_t rx_data = 0;
+    uint16_t tx_data = 0x1234;
+    uint16_t rx_data = 0;
 
     printk("SPI Master example application\n");
 
     printk("rx_data buffer at %p\n", &rx_data);
 
-    spi = device_get_binding(DT_INST_0_NORDIC_NRF_SPI_LABEL);
+    spi = device_get_binding(DT_LABEL(DT_NODELABEL(spi0)));
     if (!spi) {
         printk("Could not find SPI driver\n");
         return;
     }
 
-    cs_ctrl.gpio_dev = device_get_binding(DT_ALIAS_SPI_0_CS_GPIOS_CONTROLLER);
-    cs_ctrl.gpio_pin = DT_ALIAS_SPI_0_CS_GPIOS_PIN;
+    cs_ctrl.gpio_dev = device_get_binding(DT_LABEL(DT_PHANDLE_BY_IDX(DT_NODELABEL(spi0), cs_gpios, 0)));
+    cs_ctrl.gpio_pin = DT_PHA(DT_NODELABEL(spi0), cs_gpios, pin);
     cs_ctrl.delay = 0;
 
     /*
@@ -122,7 +122,7 @@ void spi_master_init(void)
 
     printk("%s: %s master config "
             "[wordsize(%u), mode(%u/%u/%u)]\n", __func__,
-            DT_INST_0_NORDIC_NRF_SPI_LABEL,
+            DT_LABEL(DT_NODELABEL(spi0)),
             SPI_WORD_SIZE_GET(spi_cfg.operation),
             (SPI_MODE_GET(spi_cfg.operation) & SPI_MODE_CPOL) ? 1 : 0,
             (SPI_MODE_GET(spi_cfg.operation) & SPI_MODE_CPHA) ? 1 : 0,
@@ -131,10 +131,10 @@ void spi_master_init(void)
     printk("%s: SPI pin config -- "
            "MOSI(P0.%d), MISO(P0.%d), SCK(P0.%d), CS(P0.%d)\n",
            __func__,
-           DT_ALIAS_SPI_0_MOSI_PIN,
-           DT_ALIAS_SPI_0_MISO_PIN,
-           DT_ALIAS_SPI_0_SCK_PIN,
-           DT_ALIAS_SPI_0_CS_GPIOS_PIN);
+           DT_PROP(DT_NODELABEL(spi0), mosi_pin),
+           DT_PROP(DT_NODELABEL(spi0), miso_pin),
+           DT_PROP(DT_NODELABEL(spi0), sck_pin),
+           DT_PHA(DT_NODELABEL(spi0), cs_gpios, pin));
 
     while (1) {
 

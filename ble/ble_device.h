@@ -30,7 +30,7 @@ extern char DeviceId [MAX_DEVICEID_STRING_LEN];
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-int  ble_enqueue_msg(ble_event_t charact, u32_t data);
+int  ble_enqueue_msg(ble_event_t charact, uint32_t data);
 void ble_device_events(void);
 int  ble_device_init(void);
 void ble_device_name(void);

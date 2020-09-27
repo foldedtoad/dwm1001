@@ -23,8 +23,7 @@ LOG_MODULE_REGISTER(main);
 /* 
  * See ./build/zephyr/include/generated/generated_dts_board.conf for details
  */
-#define BUTTON_GPIO_CONTROLLER_NAME     DT_ALIAS_SW0_GPIOS_CONTROLLER
-#define BUTTON_0_PIN                    DT_GPIO_KEYS_BUTTON_0_GPIOS_PIN
+#define BUTTON_0_PIN  DT_GPIO_PIN(DT_ALIAS(sw0), gpios)
 
 static struct gpio_callback gpio_cb;
 static struct device * gpiob;
@@ -32,7 +31,7 @@ static struct device * gpiob;
 /* Button event callback */
 static void button_event(struct device * gpiob, 
                          struct gpio_callback * cb, 
-                         u32_t pins)
+                         uint32_t pins)
 {
     int button_state;
 
@@ -55,7 +54,8 @@ int dw_main(void)
     printk(APP_LINE);
     
     /* Get GPIO device binding */
-    gpiob = device_get_binding(BUTTON_GPIO_CONTROLLER_NAME);
+    gpiob = device_get_binding(DT_LABEL(DT_NODELABEL(gpio0)));
+
     if (!gpiob) {
         printk("error\n");
         return -1;

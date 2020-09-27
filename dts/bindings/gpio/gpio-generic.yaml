@@ -1,0 +1,16 @@
+# Copyright (c) 2020 Callender Consulting, LLC
+# SPDX-License-Identifier: Apache-2.0
+
+description: GPIO generic parent node
+
+compatible: "gpio-generic"
+
+child-binding:
+    description: GPIO KEYS child node
+    properties:
+        gpios:
+            type: phandle-array
+            required: true
+        label:
+            type: string
+            required: true

@@ -28,5 +28,5 @@ void spi_master_thread(void * id, void * unused1, void * unused2)
 }
 
 K_THREAD_DEFINE(spi_master_id, STACKSIZE, spi_master_thread, 
-                NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
+                NULL, NULL, NULL, PRIORITY, 0, 0);
 #endif

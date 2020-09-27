@@ -61,18 +61,23 @@ static struct spi_cs_control cs_ctrl;
 int openspi(void)
 {
     /* Propagate CS config into all spi_cfgs[] elements */
-    cs_ctrl.gpio_dev = device_get_binding(DT_NORDIC_NRF_SPI_SPI_1_CS_GPIOS_CONTROLLER);
-    cs_ctrl.gpio_pin = DT_INST_0_NORDIC_NRF_SPI_CS_GPIOS_PIN;
+    cs_ctrl.gpio_dev = device_get_binding(DT_LABEL(DT_PHANDLE_BY_IDX(DT_NODELABEL(spi1), cs_gpios, 0)));
+    if (!cs_ctrl.gpio_dev) {
+        printk("%s: GPIO binding failed.\n", __func__);
+        return -1;
+    }
+    cs_ctrl.gpio_pin = DT_PHA(DT_NODELABEL(spi1), cs_gpios, pin);
     cs_ctrl.delay = 0U;
+    cs_ctrl.gpio_dt_flags =  DT_PHA(DT_NODELABEL(spi1), cs_gpios, flags);
     for (int i=0; i < SPI_CFGS_COUNT; i++) {
         spi_cfgs[i].cs = &cs_ctrl;
     }
 
     spi_cfg = &spi_cfgs[0];
 
-    spi = device_get_binding(DT_SPI_1_NAME);
+    spi = device_get_binding(DT_LABEL(DT_NODELABEL(spi1)));
     if (!spi) {
-        printk("Could not find SPI driver\n");
+        printk("%s: SPI binding failed.\n", __func__);
         return -1;
     }
     spi_cfg->operation = SPI_WORD_SET(8);

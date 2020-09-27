@@ -80,9 +80,8 @@ int dw_main(void)
     openspi();
 
     if (dwt_initialise(DWT_LOADNONE) == DWT_ERROR) {
-        printk("INIT FAILED");
-        k_sleep(K_MSEC(500));
-        while (1) { /* spin */ };
+        printk("INIT FAILED\n");
+        while (1) { k_yield(); };
     }
 
     port_set_dw1000_fastrate();
