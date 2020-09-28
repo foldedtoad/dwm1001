@@ -26,10 +26,10 @@ LOG_MODULE_REGISTER(main);
 #define BUTTON_0_PIN  DT_GPIO_PIN(DT_ALIAS(sw0), gpios)
 
 static struct gpio_callback gpio_cb;
-static struct device * gpiob;
+static const struct device * gpiob;
 
 /* Button event callback */
-static void button_event(struct device * gpiob, 
+static void button_event(const struct device * gpiob, 
                          struct gpio_callback * cb, 
                          uint32_t pins)
 {

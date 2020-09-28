@@ -23,7 +23,7 @@
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-int spi_master_write(struct device * spi, 
+int spi_master_write(const struct device * spi, 
                      struct spi_config * spi_cfg,
                      uint16_t * data)
 {
@@ -47,7 +47,7 @@ int spi_master_write(struct device * spi,
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-int spi_master_read(struct device * spi, 
+int spi_master_read(const struct device * spi, 
                     struct spi_config * spi_cfg,
                     uint16_t * data)
 {
@@ -70,7 +70,7 @@ int spi_master_read(struct device * spi,
 /*---------------------------------------------------------------------------*/
 void spi_master_init(void)
 {
-    struct device * spi;
+    const struct device * spi;
     struct spi_config spi_cfg;
     struct spi_cs_control cs_ctrl;
 

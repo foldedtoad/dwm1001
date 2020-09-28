@@ -22,7 +22,7 @@ LOG_MODULE_REGISTER(accel);
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-static int32_t read_sensor(struct device * sensor, 
+static int32_t read_sensor(const struct device * sensor, 
                            enum sensor_channel channel)
 {
     int32_t ret = 0;
@@ -61,7 +61,7 @@ static int32_t read_sensor(struct device * sensor,
 /*---------------------------------------------------------------------------*/
 void accel_init(void)
 {
-    struct device * accelerometer = device_get_binding(DT_LABEL(DT_INST(0, st_lis2dh)));
+    const struct device * accelerometer = device_get_binding(DT_LABEL(DT_INST(0, st_lis2dh)));
 
     if (accelerometer == NULL) {
         LOG_ERR("Could not get %s device", DT_LABEL(DT_INST(0, st_lis2dh)));
