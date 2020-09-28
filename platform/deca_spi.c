@@ -28,7 +28,7 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(deca_spi);
 
-struct device * spi;
+const struct device * spi;
 struct spi_config * spi_cfg;
 struct spi_config   spi_cfgs [4] = {0};
 

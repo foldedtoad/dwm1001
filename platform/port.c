@@ -26,7 +26,7 @@
 #include <hal/nrf_gpiote.h>
 #include <drivers/gpio.h>
 
-static struct device * gpio_dev;
+static const struct device * gpio_dev;
 static struct gpio_callback gpio_cb;
 
 /****************************************************************************//**
