@@ -7,7 +7,7 @@ set(BOARD nrf52_dwm1001)
 include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 project(zephyr-dwm1001)
 
-add_definitions(-DEX_05B_DEF)
+add_definitions(-DEX_05C_DEF)
 
 target_sources(app PRIVATE ../../main.c)
 target_sources(app PRIVATE ex_05c_main.c)
