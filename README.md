@@ -1,6 +1,6 @@
-# DWM1001 and Zephyr 2.3
+# DWM1001 and Zephyr 2.4
 
-**NOTE: This set of projects require Zephyr Version 2.3.99.**  
+**NOTE: This set of projects require Zephyr Version 2.4.99.**  
 **      This also implies that zephyr-sdk-0.11.1 be installed or updated. **
 
 This project contains examples on how to use the Ultra Wideband (UWB) and Bluetooth hardware based DWM1001 module together with Zephyr RTOS. It's an adaptation of Decawave's examples distributed along with their driver. 
@@ -36,7 +36,7 @@ NOTE: Because the DWM1001 board incorporates a Segger JLink debugger (on-board),
 
 Because this board incorporates JLink support, Segger's RTT console support is used for logging.  This eliminates the need to configure and run a seperated UART-based console when developing.
 
-### Board Support (new)
+### Board Support
 A major feature of this project is the defining of the DWM1001 board as part of this project. The original project from which this project was cloned, required the use of a special version of the Zephyr project which had the DWM1001 board definitions inserted into the base Zephyr project. Later versions of Zephyr now have a method for defining custom boards within a project, eliminating the need to modify (and maintain) Zephyr itself.
 
 Under this project's root directory, there is a the following file tree structure: 

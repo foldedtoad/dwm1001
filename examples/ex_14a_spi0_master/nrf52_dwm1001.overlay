@@ -4,6 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+&i2c0 {
+	status = "disabled";
+};
+
 &spi0 {
 	compatible = "nordic,nrf-spi";
 	status = "okay";

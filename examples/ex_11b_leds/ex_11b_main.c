@@ -35,7 +35,7 @@ LOG_MODULE_REGISTER(main);
 #define GPIO_OUT_PIN_RED2   DT_GPIO_PIN(DT_ALIAS(led2), gpios)
 #define GPIO_OUT_PIN_BLUE   DT_GPIO_PIN(DT_ALIAS(led3), gpios)
 
-struct device * gpiob;
+const struct device * gpiob;
 
 void led_red1_off(void)
 {

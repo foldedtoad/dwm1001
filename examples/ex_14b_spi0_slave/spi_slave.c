@@ -22,7 +22,7 @@
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-int spi_slave_write(struct device * spi, 
+int spi_slave_write(const struct device * spi, 
                     struct spi_config * spi_cfg,
                     uint16_t * data)
 {
@@ -42,7 +42,7 @@ int spi_slave_write(struct device * spi,
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-int spi_slave_read(struct device * spi, 
+int spi_slave_read(const struct device * spi, 
                    struct spi_config * spi_cfg,
                    uint16_t * data)
 {
@@ -64,7 +64,7 @@ int spi_slave_read(struct device * spi,
 /*---------------------------------------------------------------------------*/
 void spi_slave_init(void)
 {
-    struct device * spi;
+    const struct device * spi;
     struct spi_config spi_cfg;
 
     uint16_t tx_data = 0x5678;
