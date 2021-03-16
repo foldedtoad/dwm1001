@@ -12,6 +12,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <zephyr.h>
 
 #include "deca_types.h"
 #include "deca_param_types.h"

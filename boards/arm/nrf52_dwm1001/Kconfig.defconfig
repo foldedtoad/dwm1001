@@ -14,14 +14,6 @@ config I2C_0
 	default y
 	depends on I2C
 
-config SPI_0
-	default n
-	depends on SPI
-
-config SPI_1
-	default y
-	depends on SPI
-
 config BT_CTLR
 	default BT
 
