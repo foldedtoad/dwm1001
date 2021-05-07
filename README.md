@@ -1,6 +1,6 @@
-# DWM1001 and Zephyr 2.4
+# DWM1001 and Zephyr 2.5
 
-**NOTE: This set of projects require Zephyr Version 2.4.99.**  
+**NOTE: This set of projects require Zephyr Version 2.5.**  
 **      This also implies that zephyr-sdk-0.11.1 be installed or updated. **
 
 This project contains examples on how to use the Ultra Wideband (UWB) and Bluetooth hardware based DWM1001 module together with Zephyr RTOS. It's an adaptation of Decawave's examples distributed along with their driver. 
