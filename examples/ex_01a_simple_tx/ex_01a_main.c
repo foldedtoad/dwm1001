@@ -110,8 +110,7 @@ int dw_main(void)
          *  the first byte of the register, we can use this simplest API
          *  function to access it.
          */
-        while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
-        { /* spin */ };
+        while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS)) { /* spin */ };
 
         /* Clear TX frame sent event. */
         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
@@ -119,8 +118,11 @@ int dw_main(void)
         /* Execute a delay between transmissions. */
         Sleep(TX_DELAY_MS);
 
+        printk("Sending TX Frame[%d]\r", (int) tx_msg[BLINK_FRAME_SN_IDX]);
+
         /* Increment the blink frame sequence number (modulo 256). */
         tx_msg[BLINK_FRAME_SN_IDX]++;
+
     }
 }
 #endif  /* EX_01A_DEF */

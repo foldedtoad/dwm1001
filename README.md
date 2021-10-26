@@ -1,7 +1,7 @@
-# DWM1001 and Zephyr 2.5
+# DWM1001 and Zephyr 2.7
 
-**NOTE: This set of projects require Zephyr Version 2.5.**  
-**      This also implies that zephyr-sdk-0.11.1 be installed or updated. **
+**NOTE: This set of projects require Zephyr Version 2.7.**  
+**      This also implies that zephyr-sdk-0.13.1 be installed or updated. **
 
 This project contains examples on how to use the Ultra Wideband (UWB) and Bluetooth hardware based DWM1001 module together with Zephyr RTOS. It's an adaptation of Decawave's examples distributed along with their driver. 
 
@@ -26,7 +26,7 @@ This example uses a custom 128-bit UUID for both the DWM1001 service and charact
 ### OS
 Linux, Mac or Windows
 
-This project was developed in a VirtualBox VM running Ubuntu 18.04 (LTS), but there is no reason these changes should work with the other OSes.
+This project was developed in a VirtualBox VM running Ubuntu 20.04 (LTS), but there is no reason these changes should work with the other OSes.
 
 ### Hardware
 You will need at least one `DWM1001-dev` board and a `micro-USB` cable.  
