@@ -92,8 +92,8 @@
 	compatible = "nordic,nrf-twi";
 	status = "okay";
 	clock-frequency = <I2C_BITRATE_FAST>;
-	sda-gpios = <&gpio0 29 0>;
-	scl-gpios = <&gpio0 28 0>;
+	sda-pin = <29>;
+	scl-pin = <28>;
 	
 	/* embedded LIS2DH accelerometer  */
 	lis2dh@19 {
