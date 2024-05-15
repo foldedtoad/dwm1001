@@ -1,7 +1,7 @@
-# DWM1001 and Zephyr 2.7
+# DWM1001 and Zephyr V3.6
 
-**NOTE: This set of projects require Zephyr Version 2.7.**  
-**      This also implies that zephyr-sdk-0.13.1 be installed or updated. **
+**NOTE: This set of projects require Zephyr Version 3.6 **  
+**      This also implies that zephyr-sdk-0.16.5 be installed or updated. **
 
 This project contains examples on how to use the Ultra Wideband (UWB) and Bluetooth hardware based DWM1001 module together with Zephyr RTOS. It's an adaptation of Decawave's examples distributed along with their driver. 
 
@@ -30,7 +30,7 @@ See the [DWM3000](https://github.com/foldedtoad/dwm3000) archive for details on 
 ### OS
 Linux, Mac or Windows
 
-This project was developed in a VirtualBox VM running Ubuntu 20.04 (LTS), but there is no reason these changes should work with the other OSes.
+This project was developed on Ubuntu 22.04 (LTS), but there is no reason these changes should work with the other OSes.
 
 ### Hardware
 You will need at least one `DWM1001-dev` board and a `micro-USB` cable.  
@@ -194,9 +194,3 @@ The following examples are provided (checkbox checked if all functionality of th
   - [ ] ex_12a_ble 
  - Example 13 - Acccelerometer
   - [ ] ex_13a_accelerometer  
-
-## What's next?
-* Examples completion
-* (Mobile) readout app (alternative: use Nordic `nrf-connect` app (iOS and Android)
-* Add DTS/Bindings structure to allow non-Zephyr-included drivers to be accessed from custom app
-* Create a VirtualBox VM image which contains a turn-key Zephyr + DWM1001 development system.
