@@ -20,6 +20,10 @@ This example uses a custom 128-bit UUID for both the DWM1001 service and charact
 
 * The original code had comment lines which extended well past 80 columns.  This is very inconvienent for development within VMs on laptops where screen real-estate limited. So the code was reformatted to 80-column max lines.  It's just easier to read and understand: that is the point of examples, right?!
 
+**NOTE: Interoperability with DWM3000 Example Projects**  
+This project now supports interoperability with the newer DecaWave UWB module, DWM3000 series.  
+See the [DWM3000](https://github.com/foldedtoad/dwm3000) archive for details on that project.
+
 ## Getting Started
 
 ## What's required?
