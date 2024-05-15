@@ -5,8 +5,8 @@
  *   see <https://www.gnu.org/licenses/>.
  * 
  */
-#include <zephyr.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
 
 #define STACKSIZE 1024
 #define PRIORITY 99

@@ -31,18 +31,18 @@
 #include "port.h"
 
 // zephyr includes
-#include <zephyr.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main);
 
 /* Example application name and version to display on console. */
 #define APP_NAME "BW PWR REF v1.2\n"
 
 /* String to display on console string */
-char console_str[16] = {0};
+char console_str[32] = {0};
 
 /* Default communication configuration. */
 static dwt_config_t config = {

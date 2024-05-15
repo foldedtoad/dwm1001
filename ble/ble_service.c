@@ -5,21 +5,21 @@
 #include <stddef.h>
 #include <string.h>
 #include <errno.h>
-#include <zephyr.h>
-#include <init.h>
+#include <zephyr/kernel.h>
+#include <zephyr/init.h>
 
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/hci.h>
-#include <bluetooth/conn.h>
-#include <bluetooth/uuid.h>
-#include <bluetooth/gatt.h>
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/hci.h>
+#include <zephyr/bluetooth/conn.h>
+#include <zephyr/bluetooth/uuid.h>
+#include <zephyr/bluetooth/gatt.h>
 
 #include "ble_device.h"
 #include "ble_uuids.h"
 #include "ble_service.h"
 
 #define LOG_LEVEL 3 //CONFIG_LOG_DEFAULT_LEVEL
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(ble_service);
 
 /*---------------------------------------------------------------------------*/

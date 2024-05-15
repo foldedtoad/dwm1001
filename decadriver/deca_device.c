@@ -12,7 +12,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#include <zephyr.h>
+#include <zephyr/kernel.h>
 
 #include "deca_types.h"
 #include "deca_param_types.h"
@@ -172,7 +172,7 @@ int dwt_setlocaldataptr(unsigned int index)
 #define XTRIM_ADDRESS  (0x1E)
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(deca_device);
 
 
@@ -3553,7 +3553,7 @@ float dwt_convertrawvoltage(uint8 raw_voltage)
     assert(pdw1000local->otp_mask & DWT_READ_OTP_BAT);
 #endif
     // the User Manual formula is: Voltage (V) = ( (SAR_LVBAT -- OTP_READ(Vmeas @ 3.3 V) ) / 173 ) + 3.3
-    realvolt = ((float)(raw_voltage - pdw1000local->vBatP) * SAR_VBAT_TO_VOLT_CONV) + 3.3 ;
+    realvolt = ((float)(raw_voltage - pdw1000local->vBatP) * (float)SAR_VBAT_TO_VOLT_CONV) + (float)3.3 ;
 
     return realvolt;
 }

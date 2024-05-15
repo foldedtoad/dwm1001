@@ -27,7 +27,7 @@
  *  @author RTLOC
  */
 
-#include <zephyr.h>
+#include <zephyr/kernel.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -41,7 +41,7 @@
 #include "ble_device.h"
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main);
 
 /* Example application name and version to display on console. */
@@ -90,11 +90,12 @@ int dw_main(void)
         /* Increase distances */
         temp += 0.01f;
 
-        distance1 = MAX_DIST1 + MAX_DIST1 * cos(temp* PI);
-        distance2 = MAX_DIST2 + MAX_DIST2 * sin(temp* PI);
+        distance1 = MAX_DIST1 + MAX_DIST1 * cos(temp* (float)PI);
+        distance2 = MAX_DIST2 + MAX_DIST2 * sin(temp* (float)PI);
 
         /* Display faked distance on console. */
-        printk("dist: %3.2f, dist2: %3.2f m\n", distance1, distance2);
+        printk("dist: %3.2g, dist2: %3.2g m\n", 
+             (double)distance1, (double)distance2);
 
         /* Fill reports */
         ble_reps->cnt = 2;

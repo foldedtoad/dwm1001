@@ -13,7 +13,7 @@
  */
 #ifdef EX_02D_DEF
 
-#include <zephyr.h>
+#include <zephyr/kernel.h>
 
 #include "deca_device_api.h"
 #include "deca_regs.h"
@@ -21,7 +21,7 @@
 #include "port.h"
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main);
 
 /* Example application name and version to display on console. */

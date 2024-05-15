@@ -23,16 +23,16 @@
  */
 #ifdef EX_10A_DEF
 
-#include <zephyr.h>
-#include <drivers/gpio.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/drivers/gpio.h>
+#include <zephyr/sys/printk.h>
 
 #include "deca_device_api.h"
 #include "deca_spi.h"
 #include "port.h"
 
-#define LOG_LEVEL 3
-#include <logging/log.h>
+#define LOG_LEVEL 3s
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main);
 
 /* Example application name and version to display on console. */

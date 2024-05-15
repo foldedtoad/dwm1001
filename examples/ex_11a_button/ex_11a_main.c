@@ -6,12 +6,12 @@
  * All rights reserved.
  *
  */
-#include <zephyr.h>
-#include <drivers/gpio.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/drivers/gpio.h>
+#include <zephyr/sys/printk.h>
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main);
 
 /* Defines */
@@ -24,6 +24,9 @@ LOG_MODULE_REGISTER(main);
  * See ./build/zephyr/include/generated/generated_dts_board.conf for details
  */
 #define BUTTON_0_PIN  DT_GPIO_PIN(DT_ALIAS(sw0), gpios)
+
+#define GPIO_NAME  DT_NODE_FULL_NAME(DT_NODELABEL(gpio0))
+
 
 static struct gpio_callback gpio_cb;
 static const struct device * gpiob;
@@ -54,7 +57,7 @@ int dw_main(void)
     printk(APP_LINE);
     
     /* Get GPIO device binding */
-    gpiob = device_get_binding(DT_LABEL(DT_NODELABEL(gpio0)));
+    gpiob = device_get_binding(GPIO_NAME);
 
     if (!gpiob) {
         printk("error\n");

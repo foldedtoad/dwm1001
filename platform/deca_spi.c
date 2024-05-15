@@ -18,14 +18,14 @@
 #include "port.h"
 
 #include <errno.h>
-#include <zephyr.h>
-#include <sys/printk.h>
-#include <device.h>
-#include <drivers/spi.h>
-#include <drivers/gpio.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/device.h>
+#include <zephyr/drivers/spi.h>
+#include <zephyr/drivers/gpio.h>
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(deca_spi);
 
 const struct device * spi;
@@ -44,6 +44,9 @@ struct spi_buf_set rx;
 
 static struct spi_cs_control cs_ctrl;
 
+#define SPI_NAME  DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_NODELABEL(spi1), cs_gpios, 0))
+
+
 /*
  *****************************************************************************
  *
@@ -61,21 +64,22 @@ static struct spi_cs_control cs_ctrl;
 int openspi(void)
 {
     /* Propagate CS config into all spi_cfgs[] elements */
-    cs_ctrl.gpio_dev = device_get_binding(DT_LABEL(DT_PHANDLE_BY_IDX(DT_NODELABEL(spi1), cs_gpios, 0)));
-    if (!cs_ctrl.gpio_dev) {
+    cs_ctrl.gpio.port = device_get_binding(SPI_NAME);
+    if (!cs_ctrl.gpio.port) {
         printk("%s: GPIO binding failed.\n", __func__);
         return -1;
     }
-    cs_ctrl.gpio_pin = DT_PHA(DT_NODELABEL(spi1), cs_gpios, pin);
+
+    cs_ctrl.gpio.pin = DT_PHA(DT_NODELABEL(spi1), cs_gpios, pin);
+    cs_ctrl.gpio.dt_flags = DT_PHA(DT_NODELABEL(spi1), cs_gpios, flags);
     cs_ctrl.delay = 0U;
-    cs_ctrl.gpio_dt_flags =  DT_PHA(DT_NODELABEL(spi1), cs_gpios, flags);
     for (int i=0; i < SPI_CFGS_COUNT; i++) {
-        spi_cfgs[i].cs = &cs_ctrl;
+        spi_cfgs[i].cs = cs_ctrl;
     }
 
     spi_cfg = &spi_cfgs[0];
 
-    spi = device_get_binding(DT_LABEL(DT_NODELABEL(spi1)));
+    spi = device_get_binding(SPI_NAME);
     if (!spi) {
         printk("%s: SPI binding failed.\n", __func__);
         return -1;

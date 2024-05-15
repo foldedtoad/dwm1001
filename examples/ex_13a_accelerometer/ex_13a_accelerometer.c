@@ -7,17 +7,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <zephyr.h>
-#include <device.h>
-#include <drivers/sensor.h>
+#include <zephyr/kernel.h>
+#include <zephyr/device.h>
+#include <zephyr/drivers/sensor.h>
 #include <stdio.h>
-#include <sys/util.h>
+#include <zephyr/sys/util.h>
 
 #include "ex_13a_accelerometer.h"
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(accel);
+
+#define ACCEL_NAME DT_NODE_FULL_NAME(DT_INST(0, st_lis2dh))
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -61,10 +63,10 @@ static int32_t read_sensor(const struct device * sensor,
 /*---------------------------------------------------------------------------*/
 void accel_init(void)
 {
-    const struct device * accelerometer = device_get_binding(DT_LABEL(DT_INST(0, st_lis2dh)));
+    const struct device * accelerometer = device_get_binding(ACCEL_NAME);
 
     if (accelerometer == NULL) {
-        LOG_ERR("Could not get %s device", DT_LABEL(DT_INST(0, st_lis2dh)));
+        LOG_ERR("Could not get %s device", ACCEL_NAME);
         return;
     }
 

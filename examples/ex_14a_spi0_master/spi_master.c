@@ -12,13 +12,15 @@
  */
 #include <string.h>
 #include <errno.h>
-#include <zephyr.h>
-#include <sys/printk.h>
-#include <device.h>
-#include <drivers/spi.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/device.h>
+#include <zephyr/drivers/spi.h>
 
 #include "spi_master.h"
 
+#define SPI_NAME  \
+    DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_NODELABEL(spi0), cs_gpios, 0))
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -81,14 +83,14 @@ void spi_master_init(void)
 
     printk("rx_data buffer at %p\n", &rx_data);
 
-    spi = device_get_binding(DT_LABEL(DT_NODELABEL(spi0)));
+    spi = device_get_binding(SPI_NAME);
     if (!spi) {
         printk("Could not find SPI driver\n");
         return;
     }
 
-    cs_ctrl.gpio_dev = device_get_binding(DT_LABEL(DT_PHANDLE_BY_IDX(DT_NODELABEL(spi0), cs_gpios, 0)));
-    cs_ctrl.gpio_pin = DT_PHA(DT_NODELABEL(spi0), cs_gpios, pin);
+    cs_ctrl.gpio.port = device_get_binding(SPI_NAME);
+    cs_ctrl.gpio.pin  = DT_PHA(DT_NODELABEL(spi0), cs_gpios, pin);
     cs_ctrl.delay = 0;
 
     /*
@@ -118,23 +120,23 @@ void spi_master_init(void)
 
     spi_cfg.operation = SPI_WORD_SET(8) | SPI_OP_MODE_MASTER;
     spi_cfg.frequency = 1000000;
-    spi_cfg.cs = &cs_ctrl;
+    spi_cfg.cs = cs_ctrl;
 
     printk("%s: %s master config "
-            "[wordsize(%u), mode(%u/%u/%u)]\n", __func__,
-            DT_LABEL(DT_NODELABEL(spi0)),
+            "[wordsize(%u), mode(%u/%u/%u)]\n", __func__, SPI_NAME,
             SPI_WORD_SIZE_GET(spi_cfg.operation),
             (SPI_MODE_GET(spi_cfg.operation) & SPI_MODE_CPOL) ? 1 : 0,
             (SPI_MODE_GET(spi_cfg.operation) & SPI_MODE_CPHA) ? 1 : 0,
             (SPI_MODE_GET(spi_cfg.operation) & SPI_MODE_LOOP) ? 1 : 0);
 
+#if 0  // to be fixed later
     printk("%s: SPI pin config -- "
-           "MOSI(P0.%d), MISO(P0.%d), SCK(P0.%d), CS(P0.%d)\n",
-           __func__,
+           "MOSI(P0.%d), MISO(P0.%d), SCK(P0.%d), CS(P0.%d)\n", __func__,
            DT_PROP(DT_NODELABEL(spi0), mosi_pin),
            DT_PROP(DT_NODELABEL(spi0), miso_pin),
            DT_PROP(DT_NODELABEL(spi0), sck_pin),
            DT_PHA(DT_NODELABEL(spi0), cs_gpios, pin));
+#endif
 
     while (1) {
 

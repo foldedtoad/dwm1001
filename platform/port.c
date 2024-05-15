@@ -19,12 +19,12 @@
 
 // zephyr includes
 #include <errno.h>
-#include <zephyr.h>
-#include <sys/printk.h>
-#include <device.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/device.h>
 #include <soc.h>
 #include <hal/nrf_gpiote.h>
-#include <drivers/gpio.h>
+#include <zephyr/drivers/gpio.h>
 
 static const struct device * gpio_dev;
 static struct gpio_callback gpio_cb;
@@ -307,7 +307,7 @@ uint32_t port_CheckEXT_IRQ(void)
 
 /* DW1000 IRQ handler definition. */
 
-#define GPIO_NAME    DT_LABEL(DT_PHANDLE_BY_IDX(DT_NODELABEL(dwmirq), gpios, 0))
+#define GPIO_NAME    DT_NODE_FULL_NAME(DT_PHANDLE_BY_IDX(DT_NODELABEL(dwmirq), gpios, 0))
 #define GPIO_PIN     DT_PHA_BY_IDX(DT_NODELABEL(dwmirq), gpios, 0, pin)
 #define GPIO_FLAGS   DT_PHA_BY_IDX(DT_NODELABEL(dwmirq), gpios, 0, flags)
 

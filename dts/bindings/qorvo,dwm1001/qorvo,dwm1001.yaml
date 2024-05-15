@@ -1,0 +1,8 @@
+# Copyright (c) 2024, Callender-Consulting, LLC.
+# SPDX-License-Identifier: Apache-2.0
+
+description: Qorvo DWM1001 controller on SPI bus
+
+compatible: "qorvo,dwm1001"
+
+include: [spi-device.yaml]

@@ -644,7 +644,7 @@ double dwt_getrangebias(uint8 chan, float range, uint8 prf)
 
     // NB: note we may get some small negitive values e.g. up to -50 cm.
 
-    int rangeint25cm = (int) (range * 4.00) ;       // convert range to integer number of 25cm values.
+    int rangeint25cm = (int) (range * 4.00f) ; // convert range to integer number of 25cm values.
 
     if (rangeint25cm > 255) rangeint25cm = 255 ;    // make sure it matches largest value in table (all tables end in 255 !!!!)
 

@@ -35,11 +35,11 @@
 #include "port.h"
 
 // zephyr includes
-#include <zephyr.h>
-#include <sys/printk.h>
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(main);
 
 /* Example application name and version to display on console. */
@@ -147,7 +147,7 @@ static double tof;
 static double distance;
 
 /* String used to display measured distance on console. */
-char dist_str[16] = {0};
+char dist_str[32] = {0};
 
 /* Declaration of static functions. */
 static uint64 get_tx_timestamp_u64(void);

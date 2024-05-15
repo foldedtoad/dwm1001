@@ -1,25 +1,25 @@
 /* 
  *  DWM1001 ble_base.c 
  */
-#include <zephyr.h>
+#include <zephyr/kernel.h>
 #include <zephyr/types.h>
 #include <stddef.h>
 #include <string.h>
 #include <errno.h>
-#include <sys/printk.h>
-#include <sys/byteorder.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/sys/byteorder.h>
 
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/hci.h>
-#include <bluetooth/conn.h>
-#include <bluetooth/uuid.h>
-#include <bluetooth/gatt.h>
-#include <bluetooth/services/bas.h>
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/hci.h>
+#include <zephyr/bluetooth/conn.h>
+#include <zephyr/bluetooth/uuid.h>
+#include <zephyr/bluetooth/gatt.h>
+#include <zephyr/bluetooth/services/bas.h>
 
 #include "ble_base.h"
 
 #define LOG_LEVEL 3 //CONFIG_LOG_DEFAULT_LEVEL
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(ble_base);
 
 static bool connect_state = false;

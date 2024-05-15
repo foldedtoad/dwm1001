@@ -6,14 +6,14 @@
 #include <stddef.h>
 #include <string.h>
 #include <errno.h>
-#include <sys/printk.h>
-#include <zephyr.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/kernel.h>
 
 #include "ble_device.h"
 #include "ble_base.h"
 
 #define LOG_LEVEL 3
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(ble_device);
 
 /*---------------------------------------------------------------------------*/
